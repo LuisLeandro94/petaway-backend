@@ -1,10 +1,12 @@
-const app = require("./app");
-const db = require("./models");
-require("dotenv").config();
+const app = require("~app");
+const db = require("~models");
+const bodyParser = require('body-parser');
 
 const PORT = process.env.PORT || 5000;
 
-app.listen({ port: PORT }, () => {
+app.use(bodyParser.json());
+
+app.listen({ port: PORT }, async () => {
   console.log("API is running in port " + PORT);
 
   db.sequelize

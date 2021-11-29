@@ -1,4 +1,11 @@
-module.exports = function ValidationError(message) {
-  this.name = 'validationError';
-  this.message = message;
-};
+
+class ValidationError{
+  name;
+  message;
+  constructor(message){
+    this.name = 'validationError';
+    this.message = message;
+  }
+}
+
+module.exports = ValidationError;
