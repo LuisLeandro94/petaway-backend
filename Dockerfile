@@ -1,4 +1,3 @@
-
 #Image specification
 FROM node:latest
 
@@ -8,6 +7,6 @@ ENV NODE_ENV="development"
 #Create working directory&Configuration
 WORKDIR /src
 
-# COPY ./app /src
+COPY /app /src
 
-# RUN npm install
+RUN yarn
