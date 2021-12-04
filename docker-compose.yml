@@ -26,13 +26,25 @@ services:
       DB_USER: postgres
       DB_HOST: database
       DB_PORT: 5432
-      DB_NAME: mydatabase
+      DB_NAME: petaway
       REDIS_URL: redis://cache
     tty: true
   database:
     image: postgres:12.3
-    volumes:
-      - ./init-sql:/docker-entrypoint-initdb.d:ro
+    ports:
+      - 5454:5454
     environment:
-      POSTGRES_DB: mydatabase
+      POSTGRES_DB: petaway
       POSTGRES_HOST_AUTH_METHOD: trust
+  pg_admin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin4
+    ports:
+      - "15432:80"
+    environment:
+      - GUNICORN_THREADS=1
+      - PGADMIN_DEFAULT_EMAIL=root@root.com
+      - PGADMIN_DEFAULT_PASSWORD=root
+    depends_on:
+      - database
+  
