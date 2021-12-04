@@ -5,8 +5,9 @@ FROM node:latest
 ENV NODE_ENV="development"
 
 #Create working directory&Configuration
-WORKDIR /src
+WORKDIR /app
 
-COPY /app /src
+COPY ./app /app
 
 RUN yarn
+

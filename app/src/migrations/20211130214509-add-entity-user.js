@@ -10,15 +10,15 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       email: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         allowNull: false,
       },
       password: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         allowNull: false,
       },
       jwt: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         allowNull: true,
       },
     });
