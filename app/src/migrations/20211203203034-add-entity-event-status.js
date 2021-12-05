@@ -1,8 +1,6 @@
-"use strict";
-
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable("event_status", {
+    return queryInterface.createTable('event_status', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -17,6 +15,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.dropTable("event_status");
+    return queryInterface.dropTable('event_status');
   },
 };

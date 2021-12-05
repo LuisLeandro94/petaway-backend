@@ -52,14 +52,10 @@ describe("Test #6 - Doing signup with erros ...", () => {
     user.email = null;
     testTemplate(user, "The email field is required");
   });
+  test("Test #6.6 - Email duplicated", () => {
+    user.email = null;
+    testTemplate(user, "Email duplicated");
+  });
 });
 
-test("Test #7 - Email duplicated ", () => {
-  return request(app)
-    .post(MAIN_ROUTE)
-    .send(user)
-    .then((res) => {
-      expect(res.status).toBe(400);
-      expect(res.body.error).toBe("Email duplicated");
-    });
-});
+

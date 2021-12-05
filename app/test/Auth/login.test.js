@@ -16,6 +16,7 @@ test("Test #1 - Doing login", () => {
     .post(MAIN_ROUTE)
     .send({ email: user.email, password: user.password })
     .then((res) => {
+      user.jwt = res.body.token;
       expect(res.status).toBe(200);
       expect(res.body).toHaveProperty("token");
     });
@@ -40,6 +41,7 @@ test("Test #3 - Protected routes", () => {
 });
 
 test("Test #4 - Token Expired", () => {
+  user.jwt = jwt.newToken();
   return request(app)
     .get("/v1/users")
     .set("authorization", `bearer ${user.token}`)

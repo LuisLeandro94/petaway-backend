@@ -1,7 +1,6 @@
 const request = require("supertest");
 const app = require("~app");
-const Pet = require("~models").Pet;
-const PetService = require("~service").Pet;
+const { PetService } = require("~service");
 const MAIN_ROUTE = "/v1/pets";
 const LOGIN_ROUTE = "v1/auth/signin";
 
@@ -18,6 +17,7 @@ test("Test #8 - Doing login", () => {
     .post(LOGIN_ROUTE)
     .send({ email: user.email, password: user.password })
     .then((res) => {
+      user.jwt = res.body.token;
       expect(res.status).toBe(200);
       expect(res.body).toHaveProperty("token");
     });

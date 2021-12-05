@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const WalkerResourse = sequelize.define("walker_resourses", {
+  const WalkerResourse = sequelize.define('walker_resourses', {
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,

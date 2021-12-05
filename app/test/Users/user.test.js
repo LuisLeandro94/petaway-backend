@@ -1,6 +1,6 @@
 const request = require("supertest");
 const app = require("~app");
-const UserService = require("~service").User;
+const { UserService } = require("~service");
 const MAIN_ROUTE = "/v1/users";
 const LOGIN_ROUTE = "v1/auth/signin";
 
@@ -17,6 +17,7 @@ test("Test #20 - Doing login", () => {
     .post(LOGIN_ROUTE)
     .send({ email: user.email, password: user.password })
     .then((res) => {
+      user.jwt = res.body.token;
       expect(res.status).toBe(200);
       expect(res.body).toHaveProperty("token");
     });
@@ -54,12 +55,17 @@ test("Test #22 - Get single user by id", () => {
 
 test("Test #23 - Update user", () => {
   const user = await userService.add({
-    email: `${Date.now()}@ipca.pt`,
-    password: "test€€€€",
     userData: {
       firstName: "Dog",
       lastName: "Panado",
-      postalCode: "4845-024",
+      address_1: "Rua das pedras",
+      address_2: "Lugar do azeite",
+      city: "Famalicão",
+      zip: "4000-909",
+      country: "Portugal",
+      profilePhoto: "",
+      birthdate: "",
+      phoneNumber: "",
     },
   });
   user.userData.firstName = "cat";

@@ -1,9 +1,7 @@
 const request = require("supertest");
 const app = require("~app");
-const UserService = require("~service").User;
-const WalkerService = require("~service").Walker;
-const PetService = require("~service").Pet;
-const ResourseService = require("~service").Resourse;
+const {UserService, WalkerService,PetService,ResourseService } = require("~service");
+
 const MAIN_ROUTE = "/v1/walkers";
 const LOGIN_ROUTE = "v1/auth/signin";
 
@@ -20,6 +18,7 @@ test("Test #25 - Doing login", () => {
     .post(LOGIN_ROUTE)
     .send({ email: user.email, password: user.password })
     .then((res) => {
+      user.jwt = res.body.token;
       expect(res.status).toBe(200);
       expect(res.body).toHaveProperty("token");
     });
@@ -73,4 +72,55 @@ test("Test #29 - Remove walker", () => {
       expect(res.status).toBe(200);
       expect(res.body.id).toBe(walker.id);
     });
+});
+
+
+test("Test #30 - Create walker", () => {
+  var newPet1 = PetService.add({ type: "Bird" });
+  var newPet2 = PetService.add({ type: "Whale" });
+  var newService = ResourseService.add({ type: "service#" });
+  const newUser = await UserService.add({
+    email: `${Date.now()}@ipca.pt`,
+    password: "test€€€€",
+    userData: {},
+  });
+  return request(app)
+    .post(`${MAIN_ROUTE}`)
+    .send({ pets: [newPet1.id,newPet2.id], services: [newService.id], userId: newUser.id })
+    .set("authorization", `bearer ${user.token}`)
+    .then((res) => {
+      expect(res.status).toBe(200);
+      expect(res.body.id).toBe(walker.id);
+    });
+});
+
+describe("Test #30.1 - Create walker with erros ...", () => {
+  var newPet1 = PetService.getSingle({ type: "Dog" });
+  var newPet2 = PetService.getSingle({ type: "Whale" });
+  var newService = ResourseService.getSingle({ type: "service" });
+  const newUser = await UserService.add({
+    email: `${Date.now()}@ipca.pt`,
+    password: "test€€€€",
+    userData: {},
+  });
+  const testTemplate = (data, errorMessage) => {
+    return request(app)
+      .post(MAIN_ROUTE)
+      .send(data)
+      .then((res) => {
+        expect(res.status).toBe(400);
+        expect(res.body.error).toBe(errorMessage);
+      });
+  };
+
+  test("Test #30.1.1 - Create new event without pets", () => {
+    testTemplate({ pets: [], services: [newService.id], userId: newUser.id }, "The pets field is required");
+  });
+  test("Test #30.1.2 -  Create new event without service", () => {
+    testTemplate({ pets: [newPet1.id,newPet2.id], services: [], userId: newUser.id }, "The service field is required");
+  });
+  test("Test #30.1.3 - Create new event without user", () => {
+    testTemplate({ pets: [newPet1.id,newPet2.id], services: [newService.id], userId: null }, "The userId field is required");
+  });
+
 });

@@ -1,7 +1,7 @@
-require("dotenv").config();
+require('dotenv').config();
 
 module.exports = (app) => {
-  const redis = require("promise-redis")();
+  const redis = require('promise-redis')();
   const client = redis.createClient(process.env.REDIS_URL);
 
   const set = async (key, value) => {
