@@ -1,7 +1,7 @@
 const request = require("supertest");
 const app = require("~app");
 const UserService = require("~service").User;
-const MAIN_ROUTE = "/v1/pets";
+const MAIN_ROUTE = "/v1/users";
 const LOGIN_ROUTE = "v1/auth/signin";
 
 beforeAll(async () => {
@@ -74,7 +74,7 @@ test("Test #23 - Update user", () => {
     });
 });
 
-test("Test #11 - Remove user", () => {
+test("Test #24 - Remove user", () => {
   const user = await userService.add({
     email: `${Date.now()}@ipca.pt`,
     password: "test€€€€",

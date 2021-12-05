@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      serviceId: {
+      resourseId: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },

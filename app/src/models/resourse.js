@@ -3,7 +3,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Service extends Model {
+  class Resourse extends Model {
     static associate(models) {
       // Service.belongsToMany(models.Walker, {
       //   through: "walker_services",
@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       // });
     }
   }
-  Service.init(
+  Resourse.init(
     {
       type: {
         type: DataTypes.STRING,
@@ -21,8 +21,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "services",
+      modelName: "resourses",
     }
   );
-  return Service;
+  return Resourse;
 };

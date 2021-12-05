@@ -1,6 +1,7 @@
 const request = require("supertest");
 const app = require("~app");
 const Pet = require("~models").Pet;
+const PetService = require("~service").Pet;
 const MAIN_ROUTE = "/v1/pets";
 const LOGIN_ROUTE = "v1/auth/signin";
 
@@ -23,12 +24,10 @@ test("Test #8 - Doing login", () => {
 });
 
 test("Test #9 - Get All Pets with login", () => {
-  return Pet.create({
-    type: "Dog",
-  })
-    .then(() =>
-      request(app).get(MAIN_ROUTE).set("authorization", `bearer ${user.token}`)
-    )
+  await PetService.add({ type: "Dog" });
+  return request(app)
+    .get(MAIN_ROUTE)
+    .set("authorization", `bearer ${user.token}`)
     .then((res) => {
       expect(res.status).toBe(200);
       expect(res.body.length).toBeGreaterThan(0);
@@ -36,8 +35,9 @@ test("Test #9 - Get All Pets with login", () => {
 });
 
 test("Test #10 - Get single Pet by id with login", () => {
+  const pet = await PetService.add({ type: "Dog" });
   return request(app)
-    .get(`${MAIN_ROUTE}/${1}`)
+    .get(`${MAIN_ROUTE}/${pet.id}`)
     .set("authorization", `bearer ${user.token}`)
     .then((res) => {
       expect(res.status).toBe(200);
@@ -46,10 +46,9 @@ test("Test #10 - Get single Pet by id with login", () => {
 });
 
 test("Test #11 - Get All Pets without login", () => {
-  return Pet.create({
-    type: "Dog",
-  })
-    .then(() => request(app).get(MAIN_ROUTE))
+  const pet = await PetService.add({ type: "Dog" });
+  return request(app)
+    .get(MAIN_ROUTE)
     .then((res) => {
       expect(res.status).toBe(401);
       expect(res.body.error).toBe("Invalid authentication! #1");
