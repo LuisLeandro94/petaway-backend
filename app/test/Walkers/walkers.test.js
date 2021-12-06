@@ -94,7 +94,7 @@ test("Test #30 - Create walker", () => {
     });
 });
 
-describe("Test #30.1 - Create walker with erros ...", () => {
+describe("Test #30.1 - Create walker with errors ...", () => {
   var newPet1 = PetService.getSingle({ type: "Dog" });
   var newPet2 = PetService.getSingle({ type: "Whale" });
   var newService = ResourseService.getSingle({ type: "service" });
@@ -113,13 +113,13 @@ describe("Test #30.1 - Create walker with erros ...", () => {
       });
   };
 
-  test("Test #30.1.1 - Create new event without pets", () => {
+  test("Test #30.1.1 - Create new walker without pets", () => {
     testTemplate({ pets: [], services: [newService.id], userId: newUser.id }, "The pets field is required");
   });
-  test("Test #30.1.2 -  Create new event without service", () => {
+  test("Test #30.1.2 -  Create new walker without service", () => {
     testTemplate({ pets: [newPet1.id,newPet2.id], services: [], userId: newUser.id }, "The service field is required");
   });
-  test("Test #30.1.3 - Create new event without user", () => {
+  test("Test #30.1.3 - Create new walker without user", () => {
     testTemplate({ pets: [newPet1.id,newPet2.id], services: [newService.id], userId: null }, "The userId field is required");
   });
 
