@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon src/server.js",
-    "test": "jest",
     "lint": "eslint src/** --fix",
+    "test": "jest  --coverage --runInBand --forceExit",
     "secure-mode": "jest --watchAll",
     "db:migrate": "sequelize-cli db:migrate",
     "postinstall": "link-module-alias"
@@ -14,6 +14,16 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "jest": {
+    "coverageTreshold": {
+      "global": {
+        "statements": 80,
+        "branches": 80,
+        "functions": 80,
+        "line": 80
+      }
+    }
+  },
   "devDependencies": {
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
@@ -27,13 +37,17 @@
     "body-parser": "^1.19.0",
     "consign": "^0.1.6",
     "dotenv": "^10.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "express": "4.16.4",
+    "husky": "^7.0.4",
     "jwt-simple": "^0.5.6",
     "link-module-alias": "^1.2.0",
     "nodemon": "^2.0.15",
     "passport": "^0.5.0",
     "passport-jwt": "^4.0.0",
     "pg": "^8.7.1",
+    "prettier": "^2.5.1",
     "sequelize": "^6.9.0",
     "sequelize-auto-migrations": "^1.0.3",
     "sequelize-auto-migrations-v2": "^1.2.1"

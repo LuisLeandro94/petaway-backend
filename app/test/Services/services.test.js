@@ -23,18 +23,6 @@ test("Test #13 - Doing login", () => {
     });
 });
 
-test("Test #14 - Get all services with login", () => {
-  return ResourseService.add({
-    type: "Pet Walking",
-  })
-    .then(() =>
-      request(app).get(MAIN_ROUTE).set("authorization", `bearer ${user.token}`)
-    )
-    .then((res) => {
-      expect(res.status).toBe(200);
-      expect(res.body.length).toBeGreaterThan(0);
-    });
-});
 
 test("Test #15 - Get single service by id with login", () => {
   return request(app)
@@ -56,6 +44,31 @@ test("Test #17 - Get single service by id but service dosen't exist", () => {
     });
 });
 
+test("Test #19 - Get single service by id without login", () => {
+  return request(app)
+    .get(`${MAIN_ROUTE}/${1}`)
+    .then((res) => {
+      expect(res.status).toBe(401);
+      expect(res.body.error).toBe("Invalid authentication! #1");
+    });
+});
+
+
+
+test("Test #14 - Get all services with login", () => {
+  return ResourseService.add({
+    type: "Pet Walking",
+  })
+    .then(() =>
+      request(app).get(MAIN_ROUTE).set("authorization", `bearer ${user.token}`)
+    )
+    .then((res) => {
+      expect(res.status).toBe(200);
+      expect(res.body.length).toBeGreaterThan(0);
+    });
+});
+
+
 test("Test #18 - Get all services without login", () => {
   return ResourseService.add({
     type: "Pet Walking",
@@ -67,11 +80,3 @@ test("Test #18 - Get all services without login", () => {
     });
 });
 
-test("Test #19 - Get single service by id without login", () => {
-  return request(app)
-    .get(`${MAIN_ROUTE}/${1}`)
-    .then((res) => {
-      expect(res.status).toBe(401);
-      expect(res.body.error).toBe("Invalid authentication! #1");
-    });
-});
