@@ -7,7 +7,7 @@ ENV NODE_ENV="development"
 #Create working directory&Configuration
 WORKDIR /app
 
-COPY ./app /app
+COPY ./ /app
 
 RUN yarn
 
