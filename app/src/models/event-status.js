@@ -1,9 +1,9 @@
-"use strict";
-const { Model } = require("sequelize");
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class EventStatus extends Model {
     static associate(models) {
-    
+
     }
   }
   EventStatus.init(
@@ -15,8 +15,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "event_status",
-    }
+      modelName: 'event_status',
+    },
   );
   return EventStatus;
 };

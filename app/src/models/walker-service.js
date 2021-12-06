@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const WalkerService = sequelize.define("walker_services", {
+  const WalkerResourse = sequelize.define('walker_resourses', {
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -10,11 +10,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    serviceId: {
+    resourseId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
   });
 
-  return WalkerService;
+  return WalkerResourse;
 };
