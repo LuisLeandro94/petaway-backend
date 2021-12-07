@@ -34,16 +34,6 @@ test("Test #9 - Get All Pets with login", () => {
     });
 });
 
-test("Test #10 - Get single Pet by id with login", () => {
-  const pet = await PetService.add({ type: "Dog" });
-  return request(app)
-    .get(`${MAIN_ROUTE}/${pet.id}`)
-    .set("authorization", `bearer ${user.token}`)
-    .then((res) => {
-      expect(res.status).toBe(200);
-      expect(res.body.type).toBe("Dog");
-    });
-});
 
 test("Test #11 - Get All Pets without login", () => {
   const pet = await PetService.add({ type: "Dog" });
@@ -55,6 +45,17 @@ test("Test #11 - Get All Pets without login", () => {
     });
 });
 
+test("Test #10 - Get single Pet by id with login", () => {
+  const pet = await PetService.add({ type: "Dog" });
+  return request(app)
+    .get(`${MAIN_ROUTE}/${pet.id}`)
+    .set("authorization", `bearer ${user.token}`)
+    .then((res) => {
+      expect(res.status).toBe(200);
+      expect(res.body.type).toBe("Dog");
+    });
+});
+
 test("Test #12 - Get single Pet by id without login", () => {
   return request(app)
     .get(`${MAIN_ROUTE}/${1}`)
@@ -63,3 +64,6 @@ test("Test #12 - Get single Pet by id without login", () => {
       expect(res.body.error).toBe("Invalid authentication! #1");
     });
 });
+
+
+
