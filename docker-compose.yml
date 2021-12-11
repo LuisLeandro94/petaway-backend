@@ -6,6 +6,7 @@ services:
     expose:
       - 6379
   app:
+    restart: always
     build:
       context: ./  
     depends_on:
@@ -13,7 +14,7 @@ services:
     image: n-app
     #volumes setting
     volumes:
-      - "./app:/src"
+      - ./:/usr/src/app/code
     #Container name
     container_name: n-app
     #Port connection

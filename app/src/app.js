@@ -1,8 +1,12 @@
-const app = require('express')();
+import express from 'express';
+import {AuthRoute} from '~v1/routes/index.js';
 
+const app = express();
 app.get('/', (req, res) => {
   res.status(200).send();
 });
+
+app.use('/v1', AuthRoute);
 
 app.use((err, req, res, next) => {
   const { name, message, stack } = err;
@@ -11,4 +15,4 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
-module.exports = app;
+export default app;

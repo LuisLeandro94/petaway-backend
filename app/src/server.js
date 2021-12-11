@@ -1,6 +1,6 @@
-const bodyParser = require('body-parser');
-const app = require('~app');
-const db = require('~models');
+import bodyParser from 'body-parser';
+import app from './app.js';
+import db from '~models/index.js';
 
 const PORT = process.env.PORT || 5000;
 
