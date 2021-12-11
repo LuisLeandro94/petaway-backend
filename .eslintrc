@@ -1,0 +1,61 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "extends": [
+    "airbnb-base",
+    "airbnb-typescript/base",
+    "prettier"
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "plugins": [
+    "prettier",
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "import/no-cycle": "off",
+    "no-param-reassign": "off"
+  },
+  "overrides": [
+    {
+      "files": [
+        "./src/models/index.ts"
+      ],
+      "rules": {
+        "global-require": "off",
+        "import/no-dynamic-require": "off"
+      }
+    },
+    {
+      "files": [
+        "./src/utils/middleware/params-handler.ts"
+      ],
+      "rules": {
+        "consistent-return": "off",
+        "no-restricted-syntax": "off",
+        "@typescript-eslint/no-use-before-define": "off",
+        "no-useless-concat": "off",
+      }
+    },
+    {
+      "files": [
+        "./src/utils/middleware/auth.ts"
+      ],
+      "rules": {
+        "consistent-return": "off"
+      }
+    },
+    {
+      "files": [
+        "*.ts"
+      ],
+      "rules": {
+        "no-useless-catch": "off",
+        "import/extensions": "off",
+      }
+    }
+  ]
+}
