@@ -4,10 +4,18 @@ FROM node:latest
 #Environment variable settings
 ENV NODE_ENV="development"
 
-#Create working directory&Configuration
-WORKDIR /app
+# Create app directory
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
 
-COPY ./ /app
 
-RUN yarn
+# Bundle app source
+COPY . ./code
 
+# Install dependencies
+COPY package.json ./code
+COPY yarn.lock ./code
+
+# Exports
+EXPOSE 5000
+# CMD [ "yarn", "start" ]
