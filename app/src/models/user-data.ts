@@ -22,16 +22,27 @@ export default class UserData extends Model<IUserDataAttributes> implements IUse
 	id: number;
 
 	userId: number;
+
 	firstName?: string;
+
 	lastName?: string;
+
 	address_1?: string;
+
 	address_2?: string;
+
 	city?: string;
+
 	state?: string;
+
 	zip?: string;
+
 	country?: string;
+
 	profilePhoto?: string;
+
 	birthdate?: string;
+
 	phoneNumber?: string;
 }
 UserData.init(
@@ -48,7 +59,7 @@ UserData.init(
 		},
 		firstName: {
 			type: DataTypes.STRING,
-			allowNull: false
+			allowNull: true
 		},
 		lastName: {
 			type: DataTypes.STRING,
@@ -56,39 +67,39 @@ UserData.init(
 		},
 		address_1: {
 			type: DataTypes.STRING,
-			allowNull: false
+			allowNull: true
 		},
 		address_2: {
 			type: DataTypes.STRING,
-			allowNull: false
+			allowNull: true
 		},
 		city: {
 			type: DataTypes.STRING,
-			allowNull: false
+			allowNull: true
 		},
 		state: {
 			type: DataTypes.STRING,
-			allowNull: false
+			allowNull: true
 		},
 		zip: {
 			type: DataTypes.STRING,
-			allowNull: false
+			allowNull: true
 		},
 		country: {
 			type: DataTypes.STRING,
-			allowNull: false
+			allowNull: true
 		},
 		profilePhoto: {
 			type: DataTypes.STRING,
-			allowNull: false
+			allowNull: true
 		},
 		birthdate: {
 			type: DataTypes.STRING,
-			allowNull: false
+			allowNull: true
 		},
 		phoneNumber: {
 			type: DataTypes.STRING,
-			allowNull: false
+			allowNull: true
 		}
 	},
 	{

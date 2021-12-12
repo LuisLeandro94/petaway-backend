@@ -1,8 +1,17 @@
 import 'module-alias/register';
 import express from 'express';
- import { AuthRoute } from '~v1/routes';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import { AuthRoute } from '~v1/routes';
 
 const app = express();
+
+// Cors
+app.use(cors());
+
+// Body Parser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
 	res.status(200).send();

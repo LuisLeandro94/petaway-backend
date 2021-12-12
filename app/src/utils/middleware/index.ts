@@ -1,3 +1,5 @@
+import ParamsHandler from './params-handler';
+import ResponseHandler from './response-handler';
 import ErrorHandler from './error-handler';
 
-export { ErrorHandler };
+export { ParamsHandler, ResponseHandler, ErrorHandler };

@@ -12,6 +12,7 @@ export default class WalkerPet extends Model<IWalkerPetAttributes> implements IW
 	id: number;
 
 	walkerId: number;
+
 	petId: number;
 }
 WalkerPet.init(

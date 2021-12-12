@@ -12,6 +12,7 @@ export default class WalkerResourse extends Model<IWalkerResourseAttributes> imp
 	id: number;
 
 	walkerId: number;
+
 	resourseId: number;
 }
 WalkerResourse.init(

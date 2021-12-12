@@ -1,17 +1,26 @@
+import { createClient } from 'redis';
+
 require('dotenv').config();
 
-module.exports = (app) => {
-  const redis = require('promise-redis')();
-  const client = redis.createClient(process.env.REDIS_URL);
+class RedisClient {
+	client: any;
 
-  const set = async (key, value) => {
-    await client.set(key, value);
-  };
+	constructor() {
+		this.client = createClient({
+			url: process.env.REDIS_URL
+		});
+	}
 
-  const get = async (key) => {
-    const result = await client.get(key);
-    return result;
-  };
+	set = async (key, value) => {
+		await this.client.connect();
+		await this.client.set(key, value);
+	};
 
-  return { set, get };
-};
+	get = async (key) => {
+		await this.client.connect();
+		const result = await this.client.get(key);
+		return result;
+	};
+}
+
+export default RedisClient;

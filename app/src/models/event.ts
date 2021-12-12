@@ -14,17 +14,22 @@ interface IEventAttributes {
 
 export default class Event extends Model<IEventAttributes> implements IEventAttributes {
 	id: number;
+
 	userId: number;
 
 	walkerId: number;
+
 	resourseId: number;
+
 	petId: string;
+
 	status: number;
+
 	date: Date;
 }
 Event.init(
 	{
-    id: {
+		id: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
 			primaryKey: true,

@@ -1,5 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import { sequelize } from './index';
+import UserData from './user-data';
 
 interface IUserAttributes {
 	id?: number;
@@ -8,7 +9,7 @@ interface IUserAttributes {
 
 	password: string;
 
-	jwt: string;
+	jwt?: string;
 }
 
 export default class User extends Model<IUserAttributes> implements IUserAttributes {
@@ -19,6 +20,8 @@ export default class User extends Model<IUserAttributes> implements IUserAttribu
 	password: string;
 
 	jwt: string;
+
+	public userData?: UserData;
 }
 User.init(
 	{

@@ -20,6 +20,12 @@
       "~models": [
         "app/src/models",
       ],
+      "~config/*": [
+        "app/src/config/*",
+      ],
+      "~config": [
+        "app/src/config",
+      ],
       "~utils/*": [
         "app/src/utils/*",
       ],
