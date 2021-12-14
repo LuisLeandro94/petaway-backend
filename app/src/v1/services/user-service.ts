@@ -20,7 +20,7 @@ export default class UserService extends Service {
 			const user: User = await this.getSingle(null, [{ email, password }], null, null);
 
 			if (!user) {
-				throw new ErrorHandler('User not exist', 500);
+				throw new ErrorHandler('user not exist', 500);
 			}
 			const jwt_signature: string = uuidv4();
 
@@ -32,11 +32,10 @@ export default class UserService extends Service {
 
 			await redisClient.set(`user_${user.id}`, JSON.stringify({ jwt: jwtToken, jwt_signature }));
 
-			user.jwt = jwtToken;
-
 			this.save(user);
 
 			return jwtToken;
+
 		} catch (error) {
 			throw new ErrorHandler(error);
 		}
@@ -59,9 +58,8 @@ export default class UserService extends Service {
 				});
 				await this.UserDataService.save(userData);
 				return user;
-			} 
-				throw new ErrorHandler('Email already in use', 500);
-			
+			}
+			throw new ErrorHandler('Email already in use', 400);
 		} catch (error) {
 			throw new ErrorHandler(error);
 		}

@@ -11,6 +11,11 @@ module.exports = {
 				type: Sequelize.INTEGER,
 				allowNull: false
 			},
+			isDeleted: {
+				allowNull: false,
+				type: Sequelize.BOOLEAN,
+				defaultValue: false
+			},
 			createdAt: {
 				type: Sequelize.DATE,
 				allowNull: false

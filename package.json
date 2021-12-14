@@ -1,81 +1,86 @@
 {
-		"name": "api",
-		"version": "1.0.0",
-		"license": "MIT",
-		"main": "server.ts",
-		"scripts": {
-				"start": "node ./dist/server.js",
-				"build": "rm -rf dist && tsc -p tsconfig.json",
-				"watch": "nodemon --exec \"npm run build && npm run start\" --watch app/src --ext ts",
-				"debug": "nodemon --exec \"tsc -p tsconfig.json && npm run start\" --watch app/src --ext ts",
-				"db:migrate": "sequelize-cli db:migrate",
-				"db:seed": "sequelize-cli db:seed:all",
-				"lint": "eslint . --ext .ts",
-				"prettier": "prettier --config ./.prettierrc --write app/src/*"
-		},
-		"jest": {
-				"coverageTreshold": {
-						"global": {
-								"statements": 80,
-								"branches": 80,
-								"functions": 80,
-								"line": 80
-						}
-				}
-		},
-		"husky": {
-				"hooks": {
-						"pre-commit": "yarn lint && yarn test"
-				}
-		},
-		"_moduleAliases": {
-				"~v1": "dist/v1",
-				"~app": "dist/app.js",
-				"~models": "dist/models",
-				"~config": "dist/config",
-				"~utils": "dist/utils"
-		},
-		"dependencies": {
-				"@types/node": "^16.7.6",
-				"body-parser": "^1.19.0",
-				"cors": "^2.8.5",
-				"crypto": "^1.0.1",
-				"dotenv": "^10.0.0",
-				"eslint-config-airbnb-typescript": "^14.0.0",
-				"eslint-config-airbnb-typescript-prettier": "^4.2.0",
-				"express": "^4.17.1",
-				"jsonwebtoken": "^8.5.1",
-				"module-alias": "^2.2.2",
-				"nodemailer": "^6.6.3",
-				"passport": "^0.5.0",
-				"passport-jwt": "^4.0.0",
-				"pg": "^8.7.1",
-				"redis": "^4.0.0",
-				"sequelize": "^6.6.5",
-				"typescript": "^4.4.2",
-				"uuid": "^8.3.2"
-		},
-		"devDependencies": {
-				"@types/body-parser": "^1.19.1",
-				"@types/express": "^4.17.13",
-				"@types/sequelize": "^4.28.10",
-				"@typescript-eslint/eslint-plugin": "^4.29.3",
-				"@typescript-eslint/parser": "^4.29.3",
-				"eslint": "^7.2.0",
-				"eslint-config-airbnb-base": "14.2.1",
-				"eslint-config-prettier": "^8.3.0",
-				"eslint-config-standard": "^16.0.3",
-				"eslint-plugin-import": "^2.22.1",
-				"eslint-plugin-node": "^11.1.0",
-				"eslint-plugin-prettier": "^4.0.0",
-				"eslint-plugin-promise": "^5.1.0",
-				"eslint-plugin-react": "^7.25.1",
-				"eslint-plugin-standard": "^5.0.0",
-				"jest": "23.6.0",
-				"nodemon": "^2.0.12",
-				"prettier": "^2.3.2",
-				"prettier-plugin-sort-json": "^0.0.2",
-				"sequelize-cli": "^6.3.0",
-				"supertest": "3.3.0"
+	"name": "api",
+	"version": "1.0.0",
+	"license": "MIT",
+	"main": "server.ts",
+	"scripts": {
+		"start": "node ./dist/app/src/server.js",
+		"build": "rm -rf dist && tsc -p tsconfig.json",
+		"watch": "nodemon --exec \"npm run build && npm run start\" --watch app --ext ts",
+		"debug": "nodemon --exec \"tsc -p tsconfig.json && npm run start\" --watch app --ext ts",
+		"db:migrate": "sequelize-cli db:migrate",
+		"db:seed": "sequelize-cli db:seed:all",
+		"lint": "eslint . --ext .ts",
+		"prettier": "prettier --config ./.prettierrc --write app/*",
+		"secure-mode": "jest --watchAll"
+	},
+	"jest": {
+		"collectCoverage": true,
+		"coverageThreshold": {
+			"global": {
+				"statements": 80,
+				"branches": 80,
+				"functions": 80,
+				"line": 80
+			}
 		}
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "yarn lint && yarn test"
+		}
+	},
+	"_moduleAliases": {
+		"~v1": "./dist/app/src/v1",
+		"~app": "./dist/app.js",
+		"~models": "./dist/app/src/models",
+		"~config": "./dist/app/src/config",
+		"~utils": "./dist/app/src/utils"
+	},
+	"dependencies": {
+		"@types/jest": "^27.0.3",
+		"@types/node": "^16.7.6",
+		"body-parser": "^1.19.0",
+		"cors": "^2.8.5",
+		"crypto": "^1.0.1",
+		"dotenv": "^10.0.0",
+		"eslint-config-airbnb-typescript": "^14.0.0",
+		"eslint-config-airbnb-typescript-prettier": "^4.2.0",
+		"express": "^4.17.1",
+		"jsonwebtoken": "^8.5.1",
+		"module-alias": "^2.2.2",
+		"nodemailer": "^6.6.3",
+		"passport": "^0.5.0",
+		"passport-jwt": "^4.0.0",
+		"pg": "^8.7.1",
+		"redis": "^4.0.0",
+		"sequelize": "^6.6.5",
+		"ts-node": "^10.4.0",
+		"typescript": "^4.4.2",
+		"uuid": "^8.3.2"
+	},
+	"devDependencies": {
+		"@types/body-parser": "^1.19.1",
+		"@types/express": "^4.17.13",
+		"@types/sequelize": "^4.28.10",
+		"@typescript-eslint/eslint-plugin": "^4.29.3",
+		"@typescript-eslint/parser": "^4.29.3",
+		"eslint": "^7.2.0",
+		"eslint-config-airbnb-base": "14.2.1",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-config-standard": "^16.0.3",
+		"eslint-plugin-import": "^2.22.1",
+		"eslint-plugin-node": "^11.1.0",
+		"eslint-plugin-prettier": "^4.0.0",
+		"eslint-plugin-promise": "^5.1.0",
+		"eslint-plugin-react": "^7.25.1",
+		"eslint-plugin-standard": "^5.0.0",
+		"jest": "^27.4.5",
+		"nodemon": "^2.0.12",
+		"prettier": "^2.3.2",
+		"prettier-plugin-sort-json": "^0.0.2",
+		"sequelize-cli": "^6.3.0",
+		"supertest": "3.3.0",
+		"ts-jest": "^27.1.1"
+	}
 }

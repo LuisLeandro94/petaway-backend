@@ -8,6 +8,7 @@ module.exports = {
 		dialect: 'postgres',
 		host: DB_HOST,
 		username: DB_USER,
-		port: DB_PORT
+		port: DB_PORT,
+		logging: false
 	}
 };

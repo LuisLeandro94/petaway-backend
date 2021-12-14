@@ -2,7 +2,7 @@ import 'module-alias/register';
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import { AuthRoute } from '~v1/routes';
+import { AuthRoute, UserRoute } from '~v1/routes';
 
 const app = express();
 
@@ -18,6 +18,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/v1', AuthRoute);
+app.use('/v1', UserRoute);
 
 app.use((err, req, res, next) => {
 	const { name, message, stack } = err;

@@ -5,12 +5,16 @@ interface IWalkerAttributes {
 	id?: number;
 
 	userId: number;
+
+	isDeleted: boolean;
 }
 
 export default class Walker extends Model<IWalkerAttributes> implements IWalkerAttributes {
 	id: number;
 
 	userId: number;
+
+	isDeleted: boolean;
 }
 Walker.init(
 	{
@@ -23,7 +27,12 @@ Walker.init(
 		userId: {
 			type: DataTypes.INTEGER,
 			allowNull: false
-		}
+		},
+		isDeleted: {
+			allowNull: false,
+			type: DataTypes.BOOLEAN,
+			defaultValue: false
+		},
 	},
 	{
 		sequelize,
