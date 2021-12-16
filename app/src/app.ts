@@ -3,9 +3,17 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import { AuthRoute, UserRoute } from '~v1/routes';
+import JWT from '~utils/middleware/passport';
 
 const app = express();
 
+declare global {
+	namespace Express {
+		interface Request {
+			user_id?: any;
+		}
+	}
+}
 // Cors
 app.use(cors());
 
@@ -18,7 +26,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/v1', AuthRoute);
-app.use('/v1', UserRoute);
+app.use('/v1', new JWT().verifyJWT, UserRoute);
 
 app.use((err, req, res, next) => {
 	const { name, message, stack } = err;

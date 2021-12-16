@@ -30,12 +30,11 @@ export default class UserService extends Service {
 				expiresIn: '24h'
 			});
 
-			await redisClient.set(`user_${user.id}`, JSON.stringify({ jwt: jwtToken, jwt_signature }));
+			await redisClient.set(jwtToken, JSON.stringify({ jwt_signature }));
 
 			this.save(user);
 
 			return jwtToken;
-
 		} catch (error) {
 			throw new ErrorHandler(error);
 		}
@@ -59,7 +58,7 @@ export default class UserService extends Service {
 				await this.UserDataService.save(userData);
 				return user;
 			}
-			throw new ErrorHandler('Email already in use', 400);
+			throw new ErrorHandler('Email already in use', 409);
 		} catch (error) {
 			throw new ErrorHandler(error);
 		}
