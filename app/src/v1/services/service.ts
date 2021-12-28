@@ -18,7 +18,7 @@ export default abstract class Service {
 	): Promise<any[]> => {
 		try {
 			const results = await this.model.findAll({
-				includes: includes || '',
+				include: includes || '',
 				where: predicate || {},
 				offset,
 				limit,
@@ -40,7 +40,7 @@ export default abstract class Service {
 	): Promise<any> => {
 		try {
 			const result = await this.model.findOne({
-				includes: includes || [],
+				include: includes || [],
 				where: predicate || {},
 				attributes: { exclude: excludeAttributes, attributes }
 			});

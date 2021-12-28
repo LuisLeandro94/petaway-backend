@@ -14,11 +14,13 @@ class RedisClient {
 	set = async (key, value) => {
 		await this.client.connect();
 		await this.client.set(key, value);
+		this.client.quit()
 	};
 
 	get = async (key) => {
 		await this.client.connect();
 		const result = await this.client.get(key);
+		this.client.quit()
 		return result;
 	};
 }

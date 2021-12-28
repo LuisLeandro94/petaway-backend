@@ -1,12 +1,18 @@
-// const request = require("supertest");
-// const app = require("~app");
-// const { UserService } = require("~service");
-// const MAIN_ROUTE = "/v1/users";
-// const LOGIN_ROUTE = "v1/auth/signin";
+export {};
+import { UserService } from '~v1/services';
+const request = require('supertest');
+const MAIN_ROUTE = '/v1/users';
+const LOGIN_ROUTE = 'v1/auth/signin';
+
+let app;
+beforeAll(async () => {
+	const mod = await import('../../src/app');
+	app = (mod as any).default;
+});
 
 // beforeAll(async () => {
 //   user = await this.userService.add({
-//     email: `${Date.now()}@ipca.pt`,
+//     email: ${Date.now()}@ipca.pt,
 //     password: "test€€€€",
 //     userData: {},
 //   });
@@ -23,35 +29,22 @@
 //     });
 // });
 
-// test("Test #21 - Get all users", () => {
-//   return request(app)
-//     .get(MAIN_ROUTE)
-//     .set("authorization", `bearer ${user.token}`)
-//     .then((res) => {
-//       expect(res.status).toBe(200);
-//       expect(res.body.length).toBeGreaterThan(0);
-//     });
-// });
-
-// test("Test #22 - Get single user by id", () => {
-//   const user = await userService.add({
-//     email: `${Date.now()}@ipca.pt`,
-//     password: "test€€€€",
-//     userData: {
-//       firstName: "Dog",
-//       lastName: "Panado",
-//       postalCode: "4845-024",
-//     },
-//   });
-//   return request(app)
-//     .get(`${MAIN_ROUTE}/${user.id}`)
-//     .set("authorization", `bearer ${user.token}`)
-//     .then((res) => {
-//       expect(res.status).toBe(200);
-//       expect(res.body.lastName).toBe("Panado");
-//       expect(res.body.id).toBe(user.id);
-//     });
-// });
+test('Test #22 - Get single user by id', async () => {
+	try {
+		const userService: UserService = new UserService();
+		const user = await userService.signup(`${Date.now()}@ipca.pt,`, '123456789', 'string', 'string', 'string');
+		return (
+			request(app)
+				.get(`${MAIN_ROUTE}/${user.id}`)
+				// .set('authorization', `bearer ${user.token}`)
+				.then((res) => {
+					expect(res.status).toBe(200);
+					expect(res.body.result.userData.lastName).toBe('Panado');
+					expect(res.body.result.id).toBe(user.id);
+				})
+		);
+	} catch (error) {}
+});
 
 // test("Test #23 - Update user", () => {
 //   const user = await userService.add({

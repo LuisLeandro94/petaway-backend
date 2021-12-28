@@ -9,4 +9,4 @@ AuthRoute.post('/auth', new ParamsHandler().validateParams(AUTH_VALIDATOR.LOGIN)
 AuthRoute.post('/auth/signup', new ParamsHandler().validateParams(AUTH_VALIDATOR.SIGNUP), new AuthController().signup);
 AuthRoute.put('/auth', new AuthController().forgetPassword);
 
-export { AuthRoute };
+export default AuthRoute;

@@ -3,6 +3,11 @@ import ResponseHandler from './response-handler';
 
 export default class ParamsHandler {
 	validateParams = (requestParams: any) => (req: Request, res: Response, next: NextFunction) => {
+		if (req.method === 'GET') {
+			if (Object.keys(req.query).length === 0) {
+				req.query = req.params;
+			}
+		}
 		for (const param of requestParams) {
 			if (this.checkParamPresent(Object.keys(req.method === 'GET' ? req.query : req.body), param)) {
 				let reqParam = req.body[param.paramKey];

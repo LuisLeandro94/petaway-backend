@@ -7,12 +7,7 @@ module.exports = {
 				primaryKey: true,
 				autoIncrement: true
 			},
-			userId: {
-				allowNull: false,
-				autoIncrement: true,
-				primaryKey: true,
-				type: Sequelize.INTEGER
-			},
+
 			email: {
 				type: Sequelize.STRING,
 				allowNull: false
@@ -21,9 +16,10 @@ module.exports = {
 				type: Sequelize.STRING,
 				allowNull: false
 			},
-			jwt: {
-				type: Sequelize.STRING,
-				allowNull: true
+			isDeleted: {
+				allowNull: false,
+				type: Sequelize.BOOLEAN,
+				defaultValue: false
 			},
 			createdAt: {
 				type: Sequelize.DATE,

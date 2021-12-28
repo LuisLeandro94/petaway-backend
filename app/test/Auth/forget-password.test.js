@@ -1,3 +1,6 @@
+
+test("", () => {});
+
 // const request = require("supertest");
 // const app = require("~app");
 // const MAIN_ROUTE = "v1/auth/forgetPassword";

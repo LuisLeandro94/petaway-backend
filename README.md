@@ -5,5 +5,6 @@ To run locally:
 
 
 * Run `npm install` or `yarn install`
-* Run ` bash ./runDocker.sh` 
-* Run `nodemon` or `npm start`
+* Run ` bash ./runDocker.sh` or ` bash ./runDocker.sh`
+* Run `cd code`
+* Run or `npm start`

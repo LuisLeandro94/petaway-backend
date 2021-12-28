@@ -1,4 +1,4 @@
-import { DataTypes, Model } from 'sequelize';
+import { Association, DataTypes, Model } from 'sequelize';
 import { sequelize } from './index';
 import UserData from './user-data';
 
@@ -9,7 +9,7 @@ interface IUserAttributes {
 
 	password: string;
 
-	jwt?: string;
+	isDeleted?: boolean;
 }
 
 export default class User extends Model<IUserAttributes> implements IUserAttributes {
@@ -19,9 +19,13 @@ export default class User extends Model<IUserAttributes> implements IUserAttribu
 
 	password: string;
 
-	jwt: string;
+	isDeleted: boolean;
 
-	public userData?: UserData;
+	public readonly userData?: UserData;
+
+	public readonly associations: {
+		userData: Association<UserData, User>;
+	};
 }
 User.init(
 	{
@@ -39,9 +43,10 @@ User.init(
 			type: DataTypes.STRING,
 			allowNull: false
 		},
-		jwt: {
-			type: DataTypes.STRING,
-			allowNull: true
+		isDeleted: {
+			allowNull: false,
+			type: DataTypes.BOOLEAN,
+			defaultValue: false
 		}
 	},
 	{

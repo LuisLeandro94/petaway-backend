@@ -5,7 +5,7 @@ const AUTH_VALIDATOR = {
 			paramKey: 'email',
 			required: true,
 			type: 'string',
-			validatorFunctions: [(param) => param.length > 0]
+			validatorFunctions: [(param) => param.length > 0 ]
 		},
 		{
 			paramKey: 'password',
@@ -17,7 +17,7 @@ const AUTH_VALIDATOR = {
 			paramKey: 'firstName',
 			required: true,
 			type: 'string',
-			validatorFunctions: [(param) => param.length > 0]
+			validatorFunctions: [(param) => param.length > 0 ]
 		},
 		{
 			paramKey: 'lastName',
