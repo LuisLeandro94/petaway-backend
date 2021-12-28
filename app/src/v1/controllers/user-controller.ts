@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import User from '~models/user';
 import { ResponseHandler } from '~utils/middleware';
 import { UserDataService, UserService } from '~v1/services';
+import { Op } from 'sequelize';
 
 export default class UserController {
 	UserService: UserService;
@@ -49,13 +50,22 @@ export default class UserController {
 
 			if (!user) res.status(500).json(new ResponseHandler(false, 500, 'user not exist'));
 
+			if (
+				await this.UserService.any({
+					email,
+					id: {
+						[Op.not]: userId
+					}
+				})
+			)
+				res.status(409).json(new ResponseHandler(false, 409, 'Email already in use'));
+
 			const userData = await this.UserDataService.getSingle(null, [{ userId: userId }], null, null);
 
 			user.email = email;
 			user.password = password;
 
 			await this.UserService.save(user);
-
 
 			userData.firstName = firstName;
 			userData.lastName = lastName;
@@ -70,7 +80,7 @@ export default class UserController {
 			userData.phoneNumber = phoneNumber;
 
 			await this.UserDataService.save(userData);
-
+			user.userData = userData;
 			res.status(201).json(new ResponseHandler(true, 201, user));
 		} catch (error) {
 			res.status(error.code).json(new ResponseHandler(false, error.code, error.message));
