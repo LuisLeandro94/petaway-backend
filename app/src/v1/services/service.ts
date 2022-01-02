@@ -8,10 +8,10 @@ export default abstract class Service {
 	}
 
 	get = async (
-		offset: number,
-		limit: number,
-		orderField: string,
-		order: string,
+		offset?: number,
+		limit?: number,
+		orderField?: string,
+		order?: string,
 		includes?: string[],
 		predicate?: any,
 		attributes?: string[]
@@ -22,7 +22,7 @@ export default abstract class Service {
 				where: predicate || {},
 				offset,
 				limit,
-				order: [[orderField, order]],
+				order,
 				attributes
 			});
 

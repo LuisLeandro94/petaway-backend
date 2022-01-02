@@ -1,21 +1,21 @@
 import { DataTypes, Model } from 'sequelize';
 import { sequelize } from './index';
 
-interface IWalkerResourseAttributes {
+interface IWalkerResourceAttributes {
 	id?: number;
 
 	walkerId: number;
-	resourseId: number;
+	resourceId: number;
 }
 
-export default class WalkerResourse extends Model<IWalkerResourseAttributes> implements IWalkerResourseAttributes {
+export default class WalkerResource extends Model<IWalkerResourceAttributes> implements IWalkerResourceAttributes {
 	id: number;
 
 	walkerId: number;
 
-	resourseId: number;
+	resourceId: number;
 }
-WalkerResourse.init(
+WalkerResource.init(
 	{
 		id: {
 			type: DataTypes.INTEGER,
@@ -27,13 +27,13 @@ WalkerResourse.init(
 			type: DataTypes.INTEGER,
 			allowNull: false
 		},
-		resourseId: {
+		resourceId: {
 			type: DataTypes.INTEGER,
 			allowNull: false
 		}
 	},
 	{
 		sequelize,
-		tableName: 'walker_resourses'
+		tableName: 'walker_resources'
 	}
 );

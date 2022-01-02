@@ -1,4 +1,4 @@
-import Resourse from '~models/resourse';
+import Resource from '~models/resource';
 import EventStatus from '~models/event-status';
 import Event from '~models/event';
 import User from '~models/user';
@@ -20,19 +20,19 @@ class Relations {
 			foreignKey: 'walkerId',
 			as: 'walker'
 		});
-		Event.hasOne(Resourse, {
-			foreignKey: 'resourseId',
-			as: 'resourse'
+		Event.hasOne(Resource, {
+			foreignKey: 'id',
+			as: 'resource'
 		});
 		Pet.belongsToMany(Walker, {
 			through: 'walker_pets',
 			as: 'walkers',
 			foreignKey: 'petId'
 		});
-		Resourse.belongsToMany(Walker, {
+		Resource.belongsToMany(Walker, {
 			through: 'walker_services',
 			as: 'walkers',
-			foreignKey: 'resourseId'
+			foreignKey: 'id'
 		});
 		UserData.belongsTo(User, {
 			foreignKey: 'userId',
@@ -47,7 +47,7 @@ class Relations {
 			as: 'pets',
 			foreignKey: 'walkerId'
 		});
-		Walker.belongsToMany(Resourse, {
+		Walker.belongsToMany(Resource, {
 			through: 'walker_services',
 			as: 'services',
 			foreignKey: 'walkerId'

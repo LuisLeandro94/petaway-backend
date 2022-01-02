@@ -1,7 +1,7 @@
 test("", () => {});
 // const request = require("supertest");
 // const app = require("~app");
-// const {UserService,WalkerService, PetService, ResourseService, EventService} = require("~service");
+// const {UserService,WalkerService, PetService, ResourceService, EventService} = require("~service");
 
 // const MAIN_ROUTE = "/v1/events";
 // const LOGIN_ROUTE = "v1/auth/signin";
@@ -30,7 +30,7 @@ test("", () => {});
 
 // test("Test #33 - Create new event", () => {
 //   var newPet = PetService.add({ type: "Shark" });
-//   var newService = ResourseService.add({ type: "service##" });
+//   var newService = ResourceService.add({ type: "service##" });
 //   newUser = await UserService.add({
 //     email: `${Date.now()}@ipca.pt`,
 //     password: "test€€€€",
@@ -51,7 +51,7 @@ test("", () => {});
 
 // describe("Test #33.1 - Create new event with erros ...", () => {
 //   var newPet = PetService.add({ type: "Foca" });
-//   var newService = ResourseService.add({ type: "service###" });
+//   var newService = ResourceService.add({ type: "service###" });
 //   newUser = await UserService.add({
 //     email: `${Date.now()}@ipca.pt`,
 //     password: "test€€€€",
@@ -114,7 +114,7 @@ test("", () => {});
 
 // test("Test #36 - Update event status", () => {
 //   var newPet = PetService.add({ type: "Shark" });
-//   var newService = ResourseService.add({ type: "service##" });
+//   var newService = ResourceService.add({ type: "service##" });
 //   newUser = await UserService.add({
 //     email: `${Date.now()}@ipca.pt`,
 //     password: "test€€€€",
@@ -136,7 +136,7 @@ test("", () => {});
 
 // test("Test #37 -  Get single event by id", () => {
 //   var newPet = PetService.add({ type: "Shark" });
-//   var newService = ResourseService.add({ type: "service##" });
+//   var newService = ResourceService.add({ type: "service##" });
 //   newUser = await UserService.add({
 //     email: `${Date.now()}@ipca.pt`,
 //     password: "test€€€€",

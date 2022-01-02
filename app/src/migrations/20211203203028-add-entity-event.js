@@ -15,7 +15,7 @@ module.exports = {
 				type: Sequelize.INTEGER,
 				allowNull: false
 			},
-			resourseId: {
+			resourceId: {
 				type: Sequelize.INTEGER,
 				allowNull: false
 			},

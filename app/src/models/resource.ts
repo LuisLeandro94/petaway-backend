@@ -1,18 +1,18 @@
 import { DataTypes, Model } from 'sequelize';
 import { sequelize } from './index';
 
-interface IResourseAttributes {
+interface IResourceAttributes {
 	id?: number;
 
 	type: string;
 }
 
-export default class Resourse extends Model<IResourseAttributes> implements IResourseAttributes {
+export default class Resource extends Model<IResourceAttributes> implements IResourceAttributes {
 	id: number;
 
 	type: string;
 }
-Resourse.init(
+Resource.init(
 	{
 		id: {
 			type: DataTypes.INTEGER,
@@ -27,6 +27,6 @@ Resourse.init(
 	},
 	{
 		sequelize,
-		tableName: 'resourses'
+		tableName: 'resources'
 	}
 );

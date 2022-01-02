@@ -6,7 +6,7 @@ interface IEventAttributes {
 	userId: number;
 
 	walkerId: number;
-	resourseId: number;
+	resourceId: number;
 	petId: string;
 	status: number;
 	date: Date;
@@ -19,7 +19,7 @@ export default class Event extends Model<IEventAttributes> implements IEventAttr
 
 	walkerId: number;
 
-	resourseId: number;
+	resourceId: number;
 
 	petId: string;
 
@@ -43,7 +43,7 @@ Event.init(
 			type: DataTypes.INTEGER,
 			allowNull: false
 		},
-		resourseId: {
+		resourceId: {
 			type: DataTypes.INTEGER,
 			allowNull: false
 		},
