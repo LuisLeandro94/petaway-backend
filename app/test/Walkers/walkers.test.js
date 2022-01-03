@@ -2,7 +2,7 @@ test("", () => {});
 
 // const request = require("supertest");
 // const app = require("~app");
-// const {UserService, WalkerService,PetService,ResourseService } = require("~service");
+// const {UserService, WalkerService,PetService,ResourceService } = require("~service");
 
 // const MAIN_ROUTE = "/v1/walkers";
 // const LOGIN_ROUTE = "v1/auth/signin";
@@ -51,7 +51,7 @@ test("", () => {});
 
 // test("Test #28 - Update walker service and pets", () => {
 //   var newPet = PetService.add({ type: "Dog" });
-//   var newService = ResourseService.add({ type: "service123" });
+//   var newService = ResourceService.add({ type: "service123" });
 
 //   return request(app)
 //     .put(`${MAIN_ROUTE}/${walker.id}`)
@@ -80,7 +80,7 @@ test("", () => {});
 // test("Test #30 - Create walker", () => {
 //   var newPet1 = PetService.add({ type: "Bird" });
 //   var newPet2 = PetService.add({ type: "Whale" });
-//   var newService = ResourseService.add({ type: "service#" });
+//   var newService = ResourceService.add({ type: "service#" });
 //   const newUser = await UserService.add({
 //     email: `${Date.now()}@ipca.pt`,
 //     password: "test€€€€",
@@ -99,7 +99,7 @@ test("", () => {});
 // describe("Test #30.1 - Create walker with errors ...", () => {
 //   var newPet1 = PetService.getSingle({ type: "Dog" });
 //   var newPet2 = PetService.getSingle({ type: "Whale" });
-//   var newService = ResourseService.getSingle({ type: "service" });
+//   var newService = ResourceService.getSingle({ type: "service" });
 //   const newUser = await UserService.add({
 //     email: `${Date.now()}@ipca.pt`,
 //     password: "test€€€€",

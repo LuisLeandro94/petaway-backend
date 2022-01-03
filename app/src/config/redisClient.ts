@@ -9,18 +9,17 @@ class RedisClient {
 		this.client = createClient({
 			url: process.env.REDIS_URL
 		});
+		this.client.connect();
 	}
 
 	set = async (key, value) => {
-		await this.client.connect();
 		await this.client.set(key, value);
-		this.client.quit()
+		this.client.disconnect();
 	};
 
 	get = async (key) => {
-		await this.client.connect();
+		// await this.client.connect();
 		const result = await this.client.get(key);
-		this.client.quit()
 		return result;
 	};
 }

@@ -10,18 +10,6 @@ const AUTH_VALIDATOR = {
 	],
 	EDIT: [
 		{
-			paramKey: 'email',
-			required: true,
-			type: 'string',
-			validatorFunctions: [(param) => param.length > 0]
-		},
-		{
-			paramKey: 'password',
-			required: true,
-			type: 'string',
-			validatorFunctions: [(param) => param.length > 8]
-		},
-		{
 			paramKey: 'firstName',
 			required: true,
 			type: 'string',
@@ -89,11 +77,11 @@ const AUTH_VALIDATOR = {
 			validatorFunctions: [(param) => param.length > 0]
 		}
 	],
-	DELETE: [
+	EDIT_PASSWORD: [
 		{
-			paramKey: 'id',
+			paramKey: 'password',
 			required: true,
-			type: 'number',
+			type: 'string',
 			validatorFunctions: [(param) => param.length > 0]
 		}
 	]

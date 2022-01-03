@@ -2,7 +2,7 @@ test("", () => {});
 
 // const request = require("supertest");
 // const app = require("~app");
-// const { ResourseService } = require("~service");
+// const { ResourceService } = require("~service");
 // const MAIN_ROUTE = "/v1/services";
 // const LOGIN_ROUTE = "v1/auth/signin";
 
@@ -58,7 +58,7 @@ test("", () => {});
 
 
 // test("Test #14 - Get all services with login", () => {
-//   return ResourseService.add({
+//   return ResourceService.add({
 //     type: "Pet Walking",
 //   })
 //     .then(() =>
@@ -72,7 +72,7 @@ test("", () => {});
 
 
 // test("Test #18 - Get all services without login", () => {
-//   return ResourseService.add({
+//   return ResourceService.add({
 //     type: "Pet Walking",
 //   })
 //     .then(() => request(app).get(MAIN_ROUTE))
