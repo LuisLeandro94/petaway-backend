@@ -30,8 +30,6 @@ export default class UserController {
 	editUser = async (req: Request, res: Response): Promise<void> => {
 		try {
 			const {
-				email,
-				password,
 				firstName,
 				lastName,
 				address_1,
@@ -46,26 +44,12 @@ export default class UserController {
 			} = req.body;
 
 			const userId = req.user_id;
+
 			const user = await this.UserService.getSingle([User.associations.userData], [{ id: userId }], null, null);
 
 			if (!user) res.status(500).json(new ResponseHandler(false, 500, 'user not exist'));
 
-			if (
-				await this.UserService.any({
-					email,
-					id: {
-						[Op.not]: userId
-					}
-				})
-			)
-				res.status(409).json(new ResponseHandler(false, 409, 'Email already in use'));
-
 			const userData = await this.UserDataService.getSingle(null, [{ userId: userId }], null, null);
-
-			user.email = email;
-			user.password = password;
-
-			await this.UserService.save(user);
 
 			userData.firstName = firstName;
 			userData.lastName = lastName;
@@ -81,6 +65,28 @@ export default class UserController {
 
 			await this.UserDataService.save(userData);
 			user.userData = userData;
+			res.status(201).json(new ResponseHandler(true, 201, user));
+		} catch (error) {
+			res.status(error.code).json(new ResponseHandler(false, error.code, error.message));
+		}
+	};
+
+	editPassword = async (req: Request, res: Response): Promise<void> => {
+		try {
+			const {
+				password,
+			} = req.body;
+
+			const userId = req.user_id;
+
+			const user = await this.UserService.getSingle([User.associations.userData], [{ id: userId }], null, null);
+
+			if (!user) res.status(500).json(new ResponseHandler(false, 500, 'user not exist'));
+
+			user.password = password;
+
+			await this.UserService.save(user);
+
 			res.status(201).json(new ResponseHandler(true, 201, user));
 		} catch (error) {
 			res.status(error.code).json(new ResponseHandler(false, error.code, error.message));
