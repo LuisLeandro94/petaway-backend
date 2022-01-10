@@ -90,7 +90,7 @@ UserData.init(
 			allowNull: true
 		},
 		profilePhoto: {
-			type: DataTypes.STRING,
+			type: DataTypes.TEXT,
 			allowNull: true
 		},
 		birthdate: {

@@ -5,6 +5,7 @@ import { WALKER_VALIDATOR } from '~v1/validators';
 
 const WalkerRoute = Router();
 
+WalkerRoute.post('/Walker', new WalkerController().addWalker);
 WalkerRoute.get('/Walker', new WalkerController().getAllWalkers);
 WalkerRoute.get(
 	'/Walker/:id',
