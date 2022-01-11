@@ -5,7 +5,7 @@ interface IWalkerResourceAttributes {
 	id?: number;
 
 	walkerId: number;
-	resourceId: number;
+	serviceId: number;
 }
 
 export default class WalkerResource extends Model<IWalkerResourceAttributes> implements IWalkerResourceAttributes {
@@ -13,7 +13,7 @@ export default class WalkerResource extends Model<IWalkerResourceAttributes> imp
 
 	walkerId: number;
 
-	resourceId: number;
+	serviceId: number;
 }
 WalkerResource.init(
 	{
@@ -27,13 +27,13 @@ WalkerResource.init(
 			type: DataTypes.INTEGER,
 			allowNull: false
 		},
-		resourceId: {
+		serviceId: {
 			type: DataTypes.INTEGER,
 			allowNull: false
 		}
 	},
 	{
 		sequelize,
-		tableName: 'walker_resources'
+		tableName: 'walker_services'
 	}
 );

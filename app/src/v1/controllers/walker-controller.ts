@@ -11,9 +11,25 @@ export default class WalkerController {
 
 	addWalker = async (req: Request, res: Response): Promise<void> => {
 		try {
+			const { services, pets } = req.body;
 			const userId = req.user_id;
-
-			const response = await this.WalkerService.insertWalker(userId);
+			if (await this.WalkerService.any({ userId: userId })) {
+				throw new ErrorHandler('user already is a walker', 500);
+			} 
+			const response = await this.WalkerService.addOrUpdateWalker(userId, services, pets);
+			res.status(201).json(new ResponseHandler(true, 201, response));
+		} catch (error) {
+			res.status(error.code).json(new ResponseHandler(false, error.code, error.message));
+		}
+	};
+	updateWalker = async (req: Request, res: Response): Promise<void> => {
+		try {
+			const { services, pets } = req.body;
+			const userId = req.user_id;
+			if (!await this.WalkerService.any({ userId: userId })) {
+				throw new ErrorHandler('user is not a walker', 500);
+			} 
+			const response = await this.WalkerService.addOrUpdateWalker(userId, services, pets);
 			res.status(201).json(new ResponseHandler(true, 201, response));
 		} catch (error) {
 			res.status(error.code).json(new ResponseHandler(false, error.code, error.message));

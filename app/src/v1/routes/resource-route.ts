@@ -5,9 +5,9 @@ import { RESOURCE_VALIDATOR } from '~v1/validators';
 
 const ResourceRoute = Router();
 
-ResourceRoute.get('/service', new ResourceController().getAllResources);
+ResourceRoute.get('/services', new ResourceController().getAllResources);
 ResourceRoute.get(
-	'/service/:id',
+	'/services/:id',
 	new ParamsHandler().validateParams(RESOURCE_VALIDATOR.GET_BY_ID),
 	new ResourceController().getResourceById
 );

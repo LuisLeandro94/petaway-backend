@@ -11,6 +11,7 @@ export default class ResourceController {
 
 	getAllResources = async (req: Request, res: Response): Promise<void> => {
 		try {
+			console.log("here")
 			const response = await this.ResourceService.get();
 			res.status(201).json(new ResponseHandler(true, 201, response));
 		} catch (error) {

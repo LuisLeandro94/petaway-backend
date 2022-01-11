@@ -1,5 +1,5 @@
 // #region Validations
-const PET_VALIDATOR = {
+const WALKER_VALIDATOR = {
 	GET_BY_ID: [
 		{
 			paramKey: 'id',
@@ -8,7 +8,21 @@ const PET_VALIDATOR = {
 			validatorFunctions: [(param) => param.length > 0 ]
 		},
 	],
+	ADD_WALKER: [
+		{
+			paramKey: 'services',
+			required: true,
+			type: 'object',
+			validatorFunctions: [(param) => param.length > 0 ]
+		},
+		{
+			paramKey: 'pets',
+			required: true,
+			type: 'object',
+			validatorFunctions: [(param) => param.length > 0 ]
+		},
+	],
 };
 // #endregion Validations
 
-export default PET_VALIDATOR;
+export default WALKER_VALIDATOR;

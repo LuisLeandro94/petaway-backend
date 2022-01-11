@@ -2,28 +2,97 @@ import Service from './service';
 import Walker from '~models/walker';
 import { ErrorHandler } from '~utils/middleware';
 import UserService from './user-service';
+import WalkerPetService from './walker-pet-service';
+import WalkerResource from '~models/walker-service';
+import WalkerPet from '~models/walker-pet';
+import WalkerResourceService from './walker-resource-service';
+import ResourceService from './resource-service';
+import PetService from './pet-service';
 
-export default class WalkerController extends Service {
+export default class WalkerService extends Service {
 	UserService: UserService;
+	WalkerPetService: WalkerPetService;
+	WalkerResourceService: WalkerResourceService;
+	ResourceService: ResourceService;
+	PetService: PetService;
+
 	constructor() {
 		super(Walker);
 		this.UserService = new UserService();
+		this.WalkerPetService = new WalkerPetService();
+		this.WalkerResourceService = new WalkerResourceService();
+		this.ResourceService = new ResourceService();
+		this.PetService = new PetService();
 	}
 
-	insertWalker = async (userId: number) => {
+	addOrUpdateWalker = async (userId: number, services: any[], pets: any[]) => {
 		try {
+			await Promise.all(
+				services.map(async (service) => {
+					if (!(await this.ResourceService.any({ id: service }))) {
+						throw new ErrorHandler('service does not exist', 500);
+					}
+				})
+			);
+
+			await Promise.all(
+				pets.map(async (pet) => {
+					if (!(await this.PetService.any({ id: pet }))) {
+						throw new ErrorHandler('service does not exist', 500);
+					}
+				})
+			);
 			if (!(await this.UserService.any({ id: userId }))) {
 				throw new ErrorHandler('user does not exist', 500);
 			}
-			if (await this.any({ userId: userId })) {
-				throw new ErrorHandler('user is already a walker', 500);
+			let newWalker;
+
+			if (!(await this.any({ userId: userId }))) {
+				newWalker = new Walker({
+					userId: userId,
+					isDeleted: false
+				});
+				await this.save(newWalker);
+			} else {
+				newWalker = await this.getSingle(null, [{ userId: userId }], null, null);
 			}
 
-			const newWalker = new Walker({
-				userId: userId,
-				isDeleted: false
+			await WalkerResource.destroy({
+				where: {
+					walkerId: newWalker.id
+				}
 			});
-			await this.save(newWalker);
+			await WalkerPet.destroy({
+				where: {
+					walkerId: newWalker.id
+				}
+			});
+
+			await Promise.all(
+				services.map(async (service) => {
+					if (!(await this.ResourceService.any({ id: service }))) {
+						throw new ErrorHandler('service does not exist', 500);
+					}
+					const newWalkerService = new WalkerResource({
+						walkerId: userId,
+						serviceId: service
+					});
+					await this.WalkerResourceService.save(newWalkerService);
+				})
+			);
+
+			await Promise.all(
+				pets.map(async (pet) => {
+					if (!(await this.PetService.any({ id: pet }))) {
+						throw new ErrorHandler('service does not exist', 500);
+					}
+					const newWalkerPet = new WalkerPet({
+						walkerId: userId,
+						petId: pet
+					});
+					await this.PetService.save(newWalkerPet);
+				})
+			);
 
 			return newWalker;
 		} catch (error) {

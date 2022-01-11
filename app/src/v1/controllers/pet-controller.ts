@@ -11,6 +11,7 @@ export default class PetController {
 
 	getAllPets = async (req: Request, res: Response): Promise<void> => {
 		try {
+			console.log("here")
 			const response = await this.PetService.get();
 			res.status(201).json(new ResponseHandler(true, 201, response));
 		} catch (error) {
