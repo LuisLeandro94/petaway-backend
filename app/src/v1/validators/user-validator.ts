@@ -1,5 +1,5 @@
 // #region Validations
-const AUTH_VALIDATOR = {
+const USER_VALIDATOR = {
 	GET_BY_ID: [
 		{
 			paramKey: 'id',
@@ -88,4 +88,4 @@ const AUTH_VALIDATOR = {
 };
 // #endregion Validations
 
-export default AUTH_VALIDATOR;
+export default USER_VALIDATOR;

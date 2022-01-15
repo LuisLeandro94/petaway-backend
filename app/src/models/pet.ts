@@ -8,7 +8,7 @@ interface IPetAttributes {
 }
 
 export default class Pet extends Model<IPetAttributes> implements IPetAttributes {
-	id: number;
+	id?: number;
 
 	type: string;
 }

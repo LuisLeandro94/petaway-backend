@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "dist",
+    "types": ["node", "jest"],
     "sourceMap": true,
     "module": "commonjs",
     "target": "es2017",

@@ -20,7 +20,7 @@ export default class UserController {
 			if (user) {
 				res.status(200).json(new ResponseHandler(true, 200, user));
 			} else {
-				res.status(500).json(new ResponseHandler(false, 500, 'user does not exist'));
+				res.status(500).json(new ResponseHandler(false, 500, 'User does not exist'));
 			}
 		} catch (error) {
 			res.status(error.code).json(new ResponseHandler(false, error.code, error.message));
@@ -42,7 +42,6 @@ export default class UserController {
 				birthdate,
 				phoneNumber
 			} = req.body;
-
 			const userId = req.user_id;
 
 			const user = await this.UserService.getSingle([User.associations.userData], [{ id: userId }], null, null);
@@ -62,12 +61,11 @@ export default class UserController {
 			userData.profilePhoto = profilePhoto;
 			userData.birthdate = birthdate;
 			userData.phoneNumber = phoneNumber;
-
 			await this.UserDataService.save(userData);
 			user.userData = userData;
 			res.status(201).json(new ResponseHandler(true, 201, user));
 		} catch (error) {
-			res.status(error.code).json(new ResponseHandler(false, error.code, error.message));
+			res.status(500).json(new ResponseHandler(false, error.code, error.message));
 		}
 	};
 

@@ -13,13 +13,13 @@ interface IUserAttributes {
 }
 
 export default class User extends Model<IUserAttributes> implements IUserAttributes {
-	id: number;
+	id?: number;
 
 	email: string;
 
 	password: string;
 
-	isDeleted: boolean;
+	isDeleted?: boolean;
 
 	public readonly userData?: UserData;
 

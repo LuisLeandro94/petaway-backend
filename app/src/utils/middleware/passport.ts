@@ -14,8 +14,11 @@ class JWT {
 			const jwtTokenCached = JSON.parse(await redisClient.get(token));
 
 			if (!token) return res.status(401).json(new ResponseHandler(false, 401, 'No token provided.'));
-			if (!jwtTokenCached)
+			
+			if (!jwtTokenCached){
 				return res.status(401).json(new ResponseHandler(false, 401, 'Failed to authenticate token.'));
+			}
+
 
 			jwt.verify(token, jwtTokenCached.jwt_signature, function (err, decoded) {
 				if (err) return res.status(500).json(new ResponseHandler(false, 401, 'Failed to authenticate token.'));
