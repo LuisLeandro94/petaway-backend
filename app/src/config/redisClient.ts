@@ -18,7 +18,6 @@ class RedisClient {
 	};
 
 	get = async (key) => {
-		// await this.client.connect();
 		const result = await this.client.get(key);
 		return result;
 	};

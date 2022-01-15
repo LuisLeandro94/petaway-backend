@@ -6,15 +6,15 @@ interface IWalkerAttributes {
 
 	userId: number;
 
-	isDeleted: boolean;
+	isDeleted?: boolean;
 }
 
 export default class Walker extends Model<IWalkerAttributes> implements IWalkerAttributes {
-	id: number;
+	id?: number;
 
 	userId: number;
 
-	isDeleted: boolean;
+	isDeleted?: boolean;
 }
 Walker.init(
 	{

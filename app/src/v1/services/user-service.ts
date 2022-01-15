@@ -20,7 +20,7 @@ export default class UserService extends Service {
 			const user: User = await this.getSingle(null, [{ email, password }], null, null);
 
 			if (!user) {
-				throw new ErrorHandler('user not exist', 500);
+				throw new ErrorHandler('user does not exist', 500);
 			}
 			const jwt_signature: string = uuidv4();
 

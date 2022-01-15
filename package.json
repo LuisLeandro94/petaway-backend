@@ -6,24 +6,13 @@
 	"scripts": {
 		"start": "node ./dist/app/src/server.js",
 		"build": "rm -rf dist && tsc -p tsconfig.json",
-		"watch": "nodemon --exec \"npm run build && npm run start\" --watch ap p --ext ts",
+		"watch": "nodemon --exec \"npm run build && npm run start\" --watch app --ext ts",
 		"debug": "nodemon --exec \"tsc -p tsconfig.json && npm run start\" --watch app --ext ts",
 		"db:migrate": "sequelize-cli db:migrate",
 		"db:seed": "sequelize-cli db:seed:all",
 		"lint": "eslint . --ext .ts",
 		"prettier": "prettier --config ./.prettierrc --write app/*",
-		"secure-mode": "jest --watchAll"
-	},
-	"jest": {
-		"collectCoverage": true,
-		"coverageThreshold": {
-			"global": {
-				"statements": 80,
-				"branches": 80,
-				"functions": 80,
-				"line": 80
-			}
-		}
+		"secure-mode": "npm run build && jest --watchAll --verbose --testPathPattern=dist/test"
 	},
 	"husky": {
 		"hooks": {

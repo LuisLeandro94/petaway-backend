@@ -17,7 +17,7 @@ class Relations {
 			as: 'user'
 		});
 		Event.hasOne(Walker, {
-			foreignKey: 'walkerId',
+			foreignKey: 'id',
 			as: 'walker'
 		});
 		Event.hasOne(Resource, {
@@ -45,12 +45,12 @@ class Relations {
 		Walker.belongsToMany(Pet, {
 			through: 'walker_pets',
 			as: 'pets',
-			foreignKey: 'walkerId'
+			foreignKey: 'id'
 		});
 		Walker.belongsToMany(Resource, {
 			through: 'walker_services',
 			as: 'services',
-			foreignKey: 'walkerId'
+			foreignKey: 'id'
 		});
 		Walker.belongsTo(User, {
 			foreignKey: 'id',
