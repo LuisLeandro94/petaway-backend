@@ -15,7 +15,11 @@ WalkerRoute.put(
 	new ParamsHandler().validateParams(WALKER_VALIDATOR.ADD_WALKER),
 	new WalkerController().updateWalker
 );
-WalkerRoute.get('/walkers', new WalkerController().getAllWalkers);
+WalkerRoute.get(
+	'/walkers',
+	new ParamsHandler().validateParams(WALKER_VALIDATOR.GET_ALL_WALKER),
+	new WalkerController().getAllWalkers
+);
 WalkerRoute.get(
 	'/walkers/:id',
 	new ParamsHandler().validateParams(WALKER_VALIDATOR.GET_BY_ID),

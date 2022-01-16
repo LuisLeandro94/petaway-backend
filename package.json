@@ -4,7 +4,7 @@
 	"license": "MIT",
 	"main": "server.ts",
 	"scripts": {
-		"start": "node ./dist/app/src/server.js",
+		"start": "node ./dist/src/server.js",
 		"build": "rm -rf dist && tsc -p tsconfig.json",
 		"watch": "nodemon --exec \"npm run build && npm run start\" --watch app --ext ts",
 		"debug": "nodemon --exec \"tsc -p tsconfig.json && npm run start\" --watch app --ext ts",
@@ -20,11 +20,11 @@
 		}
 	},
 	"_moduleAliases": {
-		"~v1": "./dist/app/src/v1",
+		"~v1": "./dist/src/v1",
 		"~app": "./dist/app.js",
-		"~models": "./dist/app/src/models",
-		"~config": "./dist/app/src/config",
-		"~utils": "./dist/app/src/utils"
+		"~models": "./dist/src/models",
+		"~config": "./dist/src/config",
+		"~utils": "./dist/src/utils"
 	},
 	"dependencies": {
 		"@types/jest": "^27.0.3",
