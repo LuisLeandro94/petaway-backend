@@ -68,7 +68,7 @@ export default class WalkerService extends Service {
 						throw new ErrorHandler('service does not exist', 500);
 					}
 					const newWalkerService = new WalkerResource({
-						walkerId: userId,
+						walkerId: newWalker.id,
 						serviceId: service
 					});
 					await this.WalkerResourceService.save(newWalkerService);
@@ -81,7 +81,7 @@ export default class WalkerService extends Service {
 						throw new ErrorHandler('service does not exist', 500);
 					}
 					const newWalkerPet = new WalkerPet({
-						walkerId: userId,
+						walkerId: newWalker.id,
 						petId: pet
 					});
 					await this.PetService.save(newWalkerPet);

@@ -32,7 +32,7 @@ class Relations {
 		Resource.belongsToMany(Walker, {
 			through: 'walker_services',
 			as: 'walkers',
-			foreignKey: 'id'
+			foreignKey: 'serviceId'
 		});
 		UserData.belongsTo(User, {
 			foreignKey: 'userId',
@@ -45,15 +45,15 @@ class Relations {
 		Walker.belongsToMany(Pet, {
 			through: 'walker_pets',
 			as: 'pets',
-			foreignKey: 'id'
+			foreignKey: 'walkerId'
 		});
 		Walker.belongsToMany(Resource, {
 			through: 'walker_services',
 			as: 'services',
-			foreignKey: 'id'
+			foreignKey: 'walkerId'
 		});
 		Walker.belongsTo(User, {
-			foreignKey: 'id',
+			foreignKey: 'userId',
 			as: 'user'
 		});
 

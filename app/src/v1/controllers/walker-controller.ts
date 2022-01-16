@@ -3,6 +3,7 @@ import { Op } from 'sequelize';
 import Pet from '~models/pet';
 import Resource from '~models/resource';
 import User from '~models/user';
+import UserData from '~models/user-data';
 import Walker from '~models/walker';
 import { ErrorHandler, ResponseHandler } from '~utils/middleware';
 import { WalkerService } from '~v1/services';
@@ -67,6 +68,20 @@ export default class WalkerController {
 					model: Pet,
 					as: 'pets',
 					where: { id: { [Op.in]: JSON.parse(pets.toString()) } }
+				},
+				{
+					model: User,
+					as: 'user',
+					include: {
+						model: UserData,
+						as: 'userData',
+						where: { city: city }
+					},
+					where: {
+						id: {
+							[Op.not]: null
+						}
+					}
 				}
 			]);
 			res.status(201).json(new ResponseHandler(true, 201, response));
