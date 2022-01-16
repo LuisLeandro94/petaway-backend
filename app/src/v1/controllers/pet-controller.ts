@@ -12,8 +12,8 @@ export default class PetController {
 	getAllPets = async (req: Request, res: Response): Promise<void> => {
 		try {
 			const response = await this.PetService.get();
-			res.status(201).json(new ResponseHandler(true, 201, response));
-		} catch (error) {
+			res.status(200).json(new ResponseHandler(true, 200, response));
+		} catch (error) /* istanbul ignore next */ {
 			res.status(error.code).json(new ResponseHandler(false, error.code, error.message));
 		}
 	};
@@ -22,9 +22,9 @@ export default class PetController {
 		try {
 			const { id } = req.query;
 			const response = await this.PetService.getSingle(null, [{ id: id }], null, null);
-			if (!response) throw new ErrorHandler("Pet dosen't exist");
-			res.status(201).json(new ResponseHandler(true, 201, response));
-		} catch (error) {
+			if (!response) throw new ErrorHandler("Pet dosen't exist", 400);
+			res.status(200).json(new ResponseHandler(true, 200, response));
+		} catch (error) /* istanbul ignore next */ {
 			res.status(error.code).json(new ResponseHandler(false, error.code, error.message));
 		}
 	};

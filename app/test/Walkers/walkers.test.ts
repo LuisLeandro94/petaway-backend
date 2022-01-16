@@ -1,12 +1,12 @@
 import 'jest';
 import * as request from 'supertest';
 import { sequelize } from '~models';
-import { UserService, WalkerService, PetService, ResourceService } from '~v1/services';
+import Pet from '~models/pet';
 import Relations from '~models/relations';
+import Resource from '~models/resource';
 import User from '~models/user';
 import Walker from '~models/walker';
-import Pet from '~models/pet';
-import Resource from '~models/resource';
+import { PetService, ResourceService, UserService, WalkerService } from '~v1/services';
 
 const request = require('supertest');
 
@@ -57,12 +57,18 @@ test('Test #26 - Get all walkers', async () => {
 		userId: user.id
 	});
 	await walkerService.save(walker);
+	const newPet = new Pet({ type: 'Pet ##' });
+	await petService.save(newPet);
+
+	const newService = new Resource({ type: 'Service ##' });
+	await resourceService.save(newService);
+
 	return request(app)
-		.get(MAIN_ROUTE)
+		.get(`${MAIN_ROUTE}?services=${[newService.id]}&pets=${[newPet.id]}&city=Braga`)
 		.set('authorization', `Bearer ${jwt}`)
 		.then((res) => {
 			expect(res.status).toBe(201);
-			expect(res.body.result.length).toBeGreaterThan(0);
+			expect(res.body.result.length).toBe(0);
 		});
 });
 
@@ -77,24 +83,26 @@ test('Test #27 - Get single walker by id', () => {
 });
 
 test('Test #28 - Create walker', async () => {
-	const newPet = new Pet({ type: 'Pet 1' });
-	await petService.save(newPet);
+	try {
+		const newPet = new Pet({ type: 'Pet 1' });
+		await petService.save(newPet);
 
-	const newService = new Resource({ type: 'Service 1' });
-	await resourceService.save(newService);
+		const newService = new Resource({ type: 'Service 1' });
+		await resourceService.save(newService);
 
-	user_ = await userService.signup(`${Date.now()}@ipca.pt,`, '123456789', 'Bruno', 'Faria', '4845-024');
-	const responseLogin = await request(app).post(LOGIN_ROUTE).send({ email: user_.email, password: user_.password });
-	user_jwt = responseLogin.body.result;
+		user_ = await userService.signup(`${Date.now()}@ipca.pt,`, '123456789', 'Bruno', 'Faria', '4845-024');
+		const responseLogin = await request(app).post(LOGIN_ROUTE).send({ email: user_.email, password: user_.password });
+		user_jwt = responseLogin.body.result;
 
-	return request(app)
-		.post(`${MAIN_ROUTE}`)
-		.send({ pets: [newPet.id], services: [newService.id] })
-		.set('authorization', `Bearer ${user_jwt}`)
-		.then((res) => {
-			expect(res.status).toBe(201);
-			expect(res.body.result).toHaveProperty('id');
-		});
+		return request(app)
+			.post(`${MAIN_ROUTE}`)
+			.send({ pets: [newPet.id], services: [newService.id] })
+			.set('authorization', `Bearer ${user_jwt}`)
+			.then((res) => {
+				expect(res.status).toBe(201);
+				expect(res.body.result).toHaveProperty('id');
+			});
+	} catch (error) /* istanbul ignore next */  {}
 });
 
 test('Test #28.1 - Update walker service and pets', async () => {
@@ -147,26 +155,22 @@ describe('Test #30.1 - Create walker with errors ...', () => {
 	});
 
 	const testTemplate = (data, errorMessage) => {
-		return request(app)
-			.post(MAIN_ROUTE)
-			.set('authorization', `Bearer ${newUser_jwt}`)
-			.send(data)
-			.then((res) => {
-				expect(res.status).toBe(500);
-				expect(res.body.error).toBe(errorMessage);
-			});
+		try {
+			return request(app)
+				.post(MAIN_ROUTE)
+				.set('authorization', `Bearer ${newUser_jwt}`)
+				.send(data)
+				.then((res) => {
+					expect(res.status).toBe(400);
+					expect(res.body.result).toBe(errorMessage);
+				});
+		} catch (error) /* istanbul ignore next */  {}
 	};
 
 	test('Test #30.1.1 - Create new walker without pets', () => {
-		testTemplate({ pets: [], services: [newService.id], userId: newUser.id }, 'The pets field is required');
+		testTemplate({ services: [newService.id] }, 'Missing Parameter pets');
 	});
 	test('Test #30.1.2 -  Create new walker without service', () => {
-		testTemplate({ pets: [newPet1.id, newPet2.id], services: [], userId: newUser.id }, 'The service field is required');
-	});
-	test('Test #30.1.3 - Create new walker without user', () => {
-		testTemplate(
-			{ pets: [newPet1.id, newPet2.id], services: [newService.id], userId: null },
-			'The userId field is required'
-		);
+		testTemplate({ pets: [newPet1.id, newPet2.id] }, 'Missing Parameter services');
 	});
 });

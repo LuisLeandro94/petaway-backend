@@ -12,8 +12,8 @@ export default class ResourceController {
 	getAllResources = async (req: Request, res: Response): Promise<void> => {
 		try {
 			const response = await this.ResourceService.get();
-			res.status(201).json(new ResponseHandler(true, 201, response));
-		} catch (error) {
+			res.status(200).json(new ResponseHandler(true, 200, response));
+		} catch (error) /* istanbul ignore next */  {
 			res.status(error.code).json(new ResponseHandler(false, error.code, error.message));
 		}
 	};
@@ -23,8 +23,8 @@ export default class ResourceController {
 			const { id } = req.query;
 			const response = await this.ResourceService.getSingle(null, [{ id: id }], null, null);
 			if (!response) throw new ErrorHandler("Service dosen't exist");
-			res.status(201).json(new ResponseHandler(true, 201, response));
-		} catch (error) {
+			res.status(200).json(new ResponseHandler(true, 200, response));
+		} catch (error) /* istanbul ignore next */  {
 			res.status(error.code).json(new ResponseHandler(false, error.code, error.message));
 		}
 	};

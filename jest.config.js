@@ -6,12 +6,12 @@ module.exports = {
 	clearMocks: true,
 
 	transform: {
-        "^.+\\.tsx?$": "ts-jest",
-    },
-    moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
-    collectCoverage: true,
+		'^.+\\.tsx?$': 'ts-jest'
+	},
+	moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+	collectCoverage: true,
 	// An array of regexp pattern strings used to skip coverage collection
-	coveragePathIgnorePatterns: ['<rootDir>/node_modules/(?!@foo)'],
+	coveragePathIgnorePatterns: ['<rootDir>/node_modules/(?!@foo)','<rootDir>/dist','<rootDir>/app/src/v1/services/service.ts'],
 
 	globals: {
 		'ts-jest': {
@@ -27,7 +27,6 @@ module.exports = {
 		'~models/(.*)': '<rootDir>/app/src/models/$1',
 		'~config$': '<rootDir>/app/src/config/index.ts',
 		'~config/(.*)': '<rootDir>/app/src/config/$1',
-		
 		'~utils/(.*)': '<rootDir>/app/src/utils/$1'
 	},
 

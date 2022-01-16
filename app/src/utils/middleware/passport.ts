@@ -12,7 +12,7 @@ class JWT {
 		try {
 			const token = req.headers['authorization'].replace('Bearer ', '');
 			const jwtTokenCached = JSON.parse(await redisClient.get(token));
-			console.log(jwtTokenCached)
+
 			if (!token) return res.status(401).json(new ResponseHandler(false, 401, 'No token provided.'));
 			
 			if (!jwtTokenCached){
@@ -24,7 +24,7 @@ class JWT {
 				req.user_id = decoded.userId;
 				next();
 			});
-		} catch (error) {
+		} catch (error) /* istanbul ignore next */  {
 			return res.status(401).json(new ResponseHandler(false, 401, 'Failed to authenticate token.'));
 		}
 	};

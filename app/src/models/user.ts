@@ -21,11 +21,7 @@ export default class User extends Model<IUserAttributes> implements IUserAttribu
 
 	isDeleted?: boolean;
 
-	public readonly userData?: UserData;
 
-	public readonly associations: {
-		userData: Association<UserData, User>;
-	};
 }
 User.init(
 	{

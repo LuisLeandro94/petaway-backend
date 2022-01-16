@@ -29,15 +29,15 @@ export default class WalkerService extends Service {
 	addOrUpdateWalker = async (userId: number, services: any[], pets: any[]) => {
 		try {
 			if (!(await this.ResourceService.any({ id: { [Op.in]: services } }))) {
-				throw new ErrorHandler('service does not exist', 500);
+				throw new ErrorHandler('service does not exist', 400);
 			}
 
 			if (!(await this.PetService.any({ id: { [Op.in]: pets } }))) {
-				throw new ErrorHandler('pet does not exist', 500);
+				throw new ErrorHandler('pet does not exist', 400);
 			}
 
 			if (!(await this.UserService.any({ id: userId }))) {
-				throw new ErrorHandler('user does not exist', 500);
+				throw new ErrorHandler('user does not exist', 400);
 			}
 			let newWalker;
 
@@ -65,7 +65,7 @@ export default class WalkerService extends Service {
 			await Promise.all(
 				services.map(async (service) => {
 					if (!(await this.ResourceService.any({ id: service }))) {
-						throw new ErrorHandler('service does not exist', 500);
+						throw new ErrorHandler('service does not exist', 400);
 					}
 					const newWalkerService = new WalkerResource({
 						walkerId: newWalker.id,
@@ -78,7 +78,7 @@ export default class WalkerService extends Service {
 			await Promise.all(
 				pets.map(async (pet) => {
 					if (!(await this.PetService.any({ id: pet }))) {
-						throw new ErrorHandler('service does not exist', 500);
+						throw new ErrorHandler('service does not exist', 400);
 					}
 					const newWalkerPet = new WalkerPet({
 						walkerId: newWalker.id,
@@ -89,7 +89,7 @@ export default class WalkerService extends Service {
 			);
 
 			return newWalker;
-		} catch (error) {
+		} catch (error) /* istanbul ignore next */  {
 			throw new ErrorHandler(error);
 		}
 	};
