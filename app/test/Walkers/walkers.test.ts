@@ -15,7 +15,7 @@ const LOGIN_ROUTE = '/v1/auth';
 const SIGNUP_ROUTE = '/v1/auth/signup';
 
 const user = new User({
-	email: `${Date.now()}@ipca.pt`,
+	email: `${Date.now()}@petaway.pt`,
 	password: 'test€€€€'
 });
 
@@ -67,7 +67,7 @@ test('Test #26 - Get all walkers', async () => {
 		.get(`${MAIN_ROUTE}?services=${[newService.id]}&pets=${[newPet.id]}&city=Braga`)
 		.set('authorization', `Bearer ${jwt}`)
 		.then((res) => {
-			expect(res.status).toBe(201);
+			expect(res.status).toBe(200);
 			expect(res.body.result.length).toBe(0);
 		});
 });
@@ -77,7 +77,7 @@ test('Test #27 - Get single walker by id', () => {
 		.get(`${MAIN_ROUTE}/${walker.id}`)
 		.set('authorization', `Bearer ${jwt}`)
 		.then((res) => {
-			expect(res.status).toBe(201);
+			expect(res.status).toBe(200);
 			expect(res.body.result).toHaveProperty('id');
 		});
 });
@@ -90,7 +90,7 @@ test('Test #28 - Create walker', async () => {
 		const newService = new Resource({ type: 'Service 1' });
 		await resourceService.save(newService);
 
-		user_ = await userService.signup(`${Date.now()}@ipca.pt,`, '123456789', 'Bruno', 'Faria', '4845-024');
+		user_ = await userService.signup(`${Date.now()}@petaway.pt,`, '123456789', 'Bruno', 'Faria', '4845-024');
 		const responseLogin = await request(app).post(LOGIN_ROUTE).send({ email: user_.email, password: user_.password });
 		user_jwt = responseLogin.body.result;
 
@@ -117,7 +117,7 @@ test('Test #28.1 - Update walker service and pets', async () => {
 		.send({ pets: [newPet.id], services: [newService.id] })
 		.set('authorization', `Bearer ${user_jwt}`)
 		.then((res) => {
-			expect(res.status).toBe(201);
+			expect(res.status).toBe(200);
 			expect(res.body.result).toHaveProperty('id');
 		});
 });
@@ -127,7 +127,7 @@ test('Test #29 - Remove walker', () => {
 		.delete(`${MAIN_ROUTE}`)
 		.set('authorization', `Bearer ${user_jwt}`)
 		.then((res) => {
-			expect(res.status).toBe(201);
+			expect(res.status).toBe(204);
 		});
 });
 
@@ -149,7 +149,7 @@ describe('Test #30.1 - Create walker with errors ...', () => {
 		newService = new Resource({ type: 'Service 1' });
 		await resourceService.save(newService);
 
-		newUser = await userService.signup(`${Date.now()}@ipca.pt,`, '123456789', 'Bruno', 'Faria', '4845-024');
+		newUser = await userService.signup(`${Date.now()}@petaway.pt,`, '123456789', 'Bruno', 'Faria', '4845-024');
 		responseLogin = await request(app).post(LOGIN_ROUTE).send({ email: user_.email, password: user_.password });
 		newUser_jwt = responseLogin.body.result;
 	});

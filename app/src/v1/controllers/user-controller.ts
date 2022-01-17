@@ -31,12 +31,13 @@ export default class UserController {
 				const isWalker = await this.WalkerService.any({ userId: userId });
 				user['isWalker'] = isWalker;
 				const user_ = {
-					isWalker,
+					id: user.id,
 					email: user.email,
 					password: user.password,
-					userData: user.userData
+					userData: user.userData,
+					isWalker
 				};
-				res.status(200).json(new ResponseHandler(true, 200, { user: user_ }));
+				res.status(200).json(new ResponseHandler(true, 200, user_));
 			} else {
 				res.status(400).json(new ResponseHandler(false, 400, 'User does not exist'));
 			}

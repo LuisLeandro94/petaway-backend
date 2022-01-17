@@ -13,7 +13,7 @@ const userService = new UserService();
 const petService = new PetService();
 
 let user = new User({
-	email: `${Date.now()}@ipca.pt`,
+	email: `${Date.now()}@petaway.pt`,
 	password: 'test€€€€'
 });
 
@@ -49,7 +49,7 @@ test('Test #9 - Get All Pets with login', async () => {
 		.get(MAIN_ROUTE)
 		.set('authorization', `Bearer ${jwt}`)
 		.then((res) => {
-			expect(res.status).toBe(201);
+			expect(res.status).toBe(200);
 			expect(res.body.result.length).toBeGreaterThan(0);
 		});
 });
@@ -72,7 +72,7 @@ test('Test #10 - Get single Pet by id with login', async () => {
 		.get(`${MAIN_ROUTE}/${pet.id}`)
 		.set('authorization', `Bearer ${jwt}`)
 		.then((res) => {
-			expect(res.status).toBe(201);
+			expect(res.status).toBe(200);
 			expect(res.body.result.type).toBe('Cat');
 		});
 });
