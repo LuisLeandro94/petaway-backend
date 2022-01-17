@@ -2,23 +2,41 @@ import { Request, Response } from 'express';
 import User from '~models/user';
 import { ResponseHandler } from '~utils/middleware';
 import { UserDataService, UserService } from '~v1/services';
-import { Op } from 'sequelize';
+import { WalkerService } from '~v1/services';
 
 export default class UserController {
 	UserService: UserService;
 	UserDataService: UserDataService;
+	WalkerService: WalkerService;
 
 	constructor() {
 		this.UserService = new UserService();
 		this.UserDataService = new UserDataService();
+		this.WalkerService = new WalkerService();
 	}
 
 	getUserById = async (req: Request, res: Response): Promise<void> => {
 		try {
-			const userId = req.user_id;
-			const user = await this.UserService.getSingle([User.associations.userData], [{ id: userId }], null, null);
+			const { id } = req.query;
+
+			let userId;
+			if (id) {
+				userId = id;
+			} else {
+				userId = req.user_id;
+			}
+
+			let user = await this.UserService.getSingle([User.associations.userData], [{ id: userId }], null, null);
 			if (user) {
-				res.status(200).json(new ResponseHandler(true, 200, user));
+				const isWalker = await this.WalkerService.any({ userId: userId });
+				user['isWalker'] = isWalker;
+				const user_ = {
+					isWalker,
+					email: user.email,
+					password: user.password,
+					userData: user.userData
+				};
+				res.status(200).json(new ResponseHandler(true, 200, { user: user_ }));
 			} else {
 				res.status(400).json(new ResponseHandler(false, 400, 'User does not exist'));
 			}
