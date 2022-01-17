@@ -22,7 +22,7 @@ export default class ResourceController {
 		try {
 			const { id } = req.query;
 			const response = await this.ResourceService.getSingle(null, [{ id: id }], null, null);
-			if (!response) throw new ErrorHandler("Service dosen't exist");
+			if (!response) throw new ErrorHandler("Service dosen't exist",400);
 			res.status(200).json(new ResponseHandler(true, 200, response));
 		} catch (error) /* istanbul ignore next */  {
 			res.status(error.code).json(new ResponseHandler(false, error.code, error.message));

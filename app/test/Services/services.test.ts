@@ -13,7 +13,7 @@ const userService = new UserService();
 const resourceService = new ResourceService();
 
 let user = new User({
-	email: `${Date.now()}@ipca.pt`,
+	email: `${Date.now()}@petaway.pt`,
 	password: 'test€€€€'
 });
 
@@ -49,17 +49,22 @@ test('Test #15 - Get single service by id with login', async () => {
 		.get(`${MAIN_ROUTE}/${service.id}`)
 		.set('authorization', `Bearer ${jwt}`)
 		.then((res) => {
-			expect(res.status).toBe(201);
+			expect(res.status).toBe(200);
 			expect(res.body.result.type).toBe('Pet walking');
 		});
 });
 
-test("Test #17 - Get single service by id but service dosen't exist", () => {
+test("Test #17 - Get single service by id but service dosen't exist", async () => {
+	await Resource.destroy({
+		where: {
+			id: 2000
+		}
+	});
 	return request(app)
 		.get(`${MAIN_ROUTE}/${2000}`)
 		.set('authorization', `Bearer ${jwt}`)
 		.then((res) => {
-			expect(res.status).toBe(500);
+			expect(res.status).toBe(400);
 			expect(res.body.result).toBe("Service dosen't exist");
 		});
 });
@@ -82,7 +87,7 @@ test('Test #14 - Get all services with login', async () => {
 		.set('authorization', `Bearer ${jwt}`)
 
 		.then((res) => {
-			expect(res.status).toBe(201);
+			expect(res.status).toBe(200);
 			expect(res.body.result.length).toBeGreaterThan(0);
 		});
 });
@@ -94,7 +99,7 @@ test('Test #18 - Get all services without login', async () => {
 	return request(app)
 		.get(MAIN_ROUTE)
 		.then((res) => {
-            expect(res.status).toBe(401);
+			expect(res.status).toBe(401);
 			expect(res.body.result).toBe('Failed to authenticate token.');
 		});
 });

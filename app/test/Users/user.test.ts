@@ -13,7 +13,7 @@ const LOGIN_ROUTE = '/v1/auth';
 const SIGNUP_ROUTE = '/v1/auth/signup';
 
 const user = new User({
-	email: `${Date.now()}@ipca.pt`,
+	email: `${Date.now()}@petaway.pt`,
 	password: 'test€€€€'
 });
 
@@ -46,7 +46,7 @@ test('Test #20 - Doing login', async () => {
 
 test('Test #22 - Get single user by id', async () => {
 	try {
-		const user_ = await userService.signup(`${Date.now()}@ipca.pt,`, '123456789', 'carlos', 'Panado', '4845-024');
+		const user_ = await userService.signup(`${Date.now()}@petaway.pt,`, '123456789', 'carlos', 'Panado', '4845-024');
 		const responseLogin = await request(app).post(LOGIN_ROUTE).send({ email: user_.email, password: user_.password });
 		return request(app)
 			.get(`${MAIN_ROUTE}`)
@@ -59,7 +59,7 @@ test('Test #22 - Get single user by id', async () => {
 	} catch (error) /* istanbul ignore next */  {}
 });
 
-test("Test #22.2 - Get single user by id  but service dosen't exist", async () => {
+test("Test #22.2 - Get single user by id  but user dosen't exist", async () => {
 	try {
 		const jwt_signature: string = uuidv4();
 
@@ -83,7 +83,7 @@ test("Test #22.2 - Get single user by id  but service dosen't exist", async () =
 
 test('Test #23 - Update user', async () => {
 	const user_ = {
-		email: `${Date.now()}@ipca.pt`,
+		email: `${Date.now()}@petaway.pt`,
 		password: 'test€€€€',
 		firstName: 'Marco',
 		lastName: 'Tinta',
@@ -108,7 +108,7 @@ test('Test #23 - Update user', async () => {
 		})
 		.set('authorization', `Bearer ${responseLogin.body.result}`)
 		.then((res) => {
-			expect(res.status).toBe(201);
+			expect(res.status).toBe(200);
 			expect(res.body.result.userData.firstName).toBe('Marco');
 			expect(res.body.result.id).toBe(userAdded.body.result.id);
 		});
@@ -119,13 +119,13 @@ test('Test #24 - Remove user', () => {
 		.delete(`${MAIN_ROUTE}`)
 		.set('authorization', `Bearer ${jwt}`)
 		.then((res) => {
-			expect(res.status).toBe(201);
+			expect(res.status).toBe(204);
 		});
 });
 
 test('Test #25 (user) - Update password', async () => {
 	const user_ = {
-		email: `${Date.now()}@ipca.pt`,
+		email: `${Date.now()}@petaway.pt`,
 		password: 'test€€€€',
 		firstName: 'Marco',
 		lastName: 'Tinta',
@@ -140,6 +140,6 @@ test('Test #25 (user) - Update password', async () => {
 		})
 		.set('authorization', `Bearer ${responseLogin.body.result}`)
 		.then((res) => {
-			expect(res.status).toBe(201);
+			expect(res.status).toBe(200);
 		});
 });

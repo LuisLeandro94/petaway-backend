@@ -76,6 +76,14 @@ const USER_VALIDATOR = {
 			type: 'string',
 			validatorFunctions: [(param) => param.length > 0]
 		}
+	],
+	GET_BY_ID: [
+		{
+			paramKey: 'id',
+			required: true,
+			type: 'number',
+			validatorFunctions: [(param) => param > 0]
+		}
 	]
 };
 // #endregion Validations

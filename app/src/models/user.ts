@@ -20,8 +20,6 @@ export default class User extends Model<IUserAttributes> implements IUserAttribu
 	password: string;
 
 	isDeleted?: boolean;
-
-
 }
 User.init(
 	{

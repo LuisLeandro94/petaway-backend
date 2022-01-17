@@ -26,7 +26,7 @@ const LOGIN_ROUTE = '/v1/auth';
 const SIGNUP_ROUTE = '/v1/auth/signup';
 
 const user = new User({
-	email: `${Date.now()}@ipca.pt`,
+	email: `${Date.now()}@petaway.pt`,
 	password: 'test€€€€'
 });
 
@@ -61,7 +61,7 @@ class Mocks {
 			const newService = new Resource({ type: 'Service ##' });
 			const addedService = await resourceService.save(newService);
 
-			const user_ = await userService.signup(`${Date.now()}@ipca.pt,`, '123456789', 'Ricardo', 'Ferreira', '4845-024');
+			const user_ = await userService.signup(`${Date.now()}@petaway.pt,`, '123456789', 'Ricardo', 'Ferreira', '4845-024');
 			const responseLogin = await request(app).post(LOGIN_ROUTE).send({ email: user_.email, password: user_.password });
 			const user_jwt = responseLogin.body.result;
 
@@ -135,7 +135,7 @@ test('Test #34 - Get all events by user', () => {
 		.get(`${MAIN_ROUTE}/user`)
 		.set('authorization', `Bearer ${templateToTest_.user_jwt}`)
 		.then((res) => {
-			expect(res.status).toBe(201);
+			expect(res.status).toBe(200);
 			expect(res.body.result.length).toBeGreaterThan(0);
 		});
 });
@@ -145,7 +145,7 @@ test('Test #35 -  Get all events by walker', () => {
 		.get(`${MAIN_ROUTE}/walker?walkerId=${templateToTest_.walker.id}`)
 		.set('authorization', `Bearer ${templateToTest_.user_jwt}`)
 		.then((res) => {
-			expect(res.status).toBe(201);
+			expect(res.status).toBe(200);
 			expect(res.body.result.length).toBeGreaterThan(0);
 		});
 });
@@ -156,7 +156,7 @@ test('Test #36 - Update event status', async () => {
 		.send({ eventId: eventId, status: 2 })
 		.set('authorization', `Bearer ${templateToTest_.user_jwt}`)
 		.then((res) => {
-			expect(res.status).toBe(201);
+			expect(res.status).toBe(200);
 			expect(res.body.result).toHaveProperty('userId');
 		});
 });

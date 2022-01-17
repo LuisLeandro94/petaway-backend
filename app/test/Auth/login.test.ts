@@ -10,7 +10,7 @@ const MAIN_ROUTE = '/v1/auth';
 const userService = new UserService();
 
 let user = new User({
-	email: `${Date.now()}@ipca.pt`,
+	email: `${Date.now()}@petaway.pt`,
 	password: 'test€€€€'
 });
 
