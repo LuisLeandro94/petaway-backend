@@ -19,6 +19,7 @@ export default class Walker extends Model<IWalkerAttributes> implements IWalkerA
 	isDeleted?: boolean;
 
 	public readonly services?: Resource;
+
 	public readonly pets?: Pet;
 
 	public readonly associations: {

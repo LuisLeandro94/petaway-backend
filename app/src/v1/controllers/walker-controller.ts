@@ -18,7 +18,7 @@ export default class WalkerController {
 		try {
 			const { services, pets } = req.body;
 			const userId = req.user_id;
-			if (await this.WalkerService.any({ userId: userId })) {
+			if (await this.WalkerService.any({ userId })) {
 				throw new ErrorHandler('User already is a walker', 400);
 			}
 			const response = await this.WalkerService.addOrUpdateWalker(userId, services, pets);
@@ -27,11 +27,12 @@ export default class WalkerController {
 			res.status(error.code).json(new ResponseHandler(false, error.code, error.message));
 		}
 	};
+
 	updateWalker = async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { services, pets } = req.body;
 			const userId = req.user_id;
-			if (!(await this.WalkerService.any({ userId: userId }))) {
+			if (!(await this.WalkerService.any({ userId }))) {
 				throw new ErrorHandler('User is not a walker', 400);
 			}
 			const response = await this.WalkerService.addOrUpdateWalker(userId, services, pets);
@@ -44,7 +45,7 @@ export default class WalkerController {
 	deleteWalker = async (req: Request, res: Response): Promise<void> => {
 		try {
 			const userId = req.user_id;
-			const walker = await this.WalkerService.delete([{ userId: userId }]);
+			const walker = await this.WalkerService.delete([{ userId }]);
 			res.status(204).json(new ResponseHandler(true, 204, walker));
 		} catch (error) /* istanbul ignore next */ {
 			res.status(error.code).json(new ResponseHandler(false, error.code, error.message));
@@ -71,7 +72,7 @@ export default class WalkerController {
 					include: {
 						model: UserData,
 						as: 'userData',
-						where: { city: city }
+						where: { city }
 					},
 					where: {
 						id: {

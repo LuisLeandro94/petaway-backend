@@ -42,15 +42,14 @@ beforeAll(async () => {
 		.catch((err) => console.log(`Error: ${err}`));
 });
 
-test('Test #34 - Doing login', () => {
-	return request(app)
+test('Test #34 - Doing login', () =>
+	request(app)
 		.post(LOGIN_ROUTE)
 		.send({ email: user.email, password: user.password })
 		.then((res) => {
 			jwt = res.body.result;
 			expect(res.status).toBe(201);
-		});
-});
+		}));
 
 test('Test #35 - Get all walkers', async () => {
 	walker = new Walker({
@@ -73,7 +72,7 @@ test('Test #35 - Get all walkers', async () => {
 });
 
 test('Test #36 - Get single walker by id', () => {
-	return request(app)
+	request(app)
 		.get(`${MAIN_ROUTE}/${user.id}`)
 		.set('authorization', `Bearer ${jwt}`)
 		.then((res) => {
@@ -161,14 +160,13 @@ test('Test #40 - Update walker but user is not a walker', async () => {
 		});
 });
 
-test('Test #41 - Remove walker', () => {
-	return request(app)
+test('Test #41 - Remove walker', () =>
+	request(app)
 		.delete(`${MAIN_ROUTE}`)
 		.set('authorization', `Bearer ${user_jwt}`)
 		.then((res) => {
 			expect(res.status).toBe(204);
-		});
-});
+		}));
 
 describe('Test #42 - Create walker with errors ...', () => {
 	let newPet1;

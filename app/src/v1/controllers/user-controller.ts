@@ -1,12 +1,13 @@
 import { Request, Response } from 'express';
 import User from '~models/user';
 import { ErrorHandler, ResponseHandler } from '~utils/middleware';
-import { UserDataService, UserService } from '~v1/services';
-import { WalkerService } from '~v1/services';
+import { UserDataService, UserService , WalkerService } from '~v1/services';
 
 export default class UserController {
 	UserService: UserService;
+
 	UserDataService: UserDataService;
+
 	WalkerService: WalkerService;
 
 	constructor() {
@@ -26,11 +27,11 @@ export default class UserController {
 				userId = req.user_id;
 			}
 
-			let user = await this.UserService.getSingle([User.associations.userData], [{ id: userId }], null, null);
+			const user = await this.UserService.getSingle([User.associations.userData], [{ id: userId }], null, null);
 
 			if (user) {
-				const isWalker = await this.WalkerService.any({ userId: userId });
-				user['isWalker'] = isWalker;
+				const isWalker = await this.WalkerService.any({ userId });
+				user.isWalker = isWalker;
 				const user_ = {
 					id: user.id,
 					email: user.email,
@@ -68,7 +69,7 @@ export default class UserController {
 
 			if (!user) res.status(400).json(new ResponseHandler(false, 400, 'User does not exist'));
 
-			const userData = await this.UserDataService.getSingle(null, [{ userId: userId }], null, null);
+			const userData = await this.UserDataService.getSingle(null, [{ userId }], null, null);
 
 			userData.firstName = firstName;
 			userData.lastName = lastName;

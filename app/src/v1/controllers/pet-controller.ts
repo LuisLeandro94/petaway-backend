@@ -21,7 +21,7 @@ export default class PetController {
 	getPetById = async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { id } = req.query;
-			const response = await this.PetService.getSingle(null, [{ id: id }], null, null);
+			const response = await this.PetService.getSingle(null, [{ id }], null, null);
 			if (!response) throw new ErrorHandler("Pet dosen't exist", 400);
 			res.status(200).json(new ResponseHandler(true, 200, response));
 		} catch (error) /* istanbul ignore next */ {

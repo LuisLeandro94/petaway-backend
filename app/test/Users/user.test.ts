@@ -1,13 +1,14 @@
 import 'jest';
 import * as request from 'supertest';
+import { v4 as uuidv4 } from 'uuid';
 import { sequelize } from '~models';
 import { UserService } from '~v1/services';
 import Relations from '~models/relations';
 import User from '~models/user';
 import RedisClient from '~config/redisClient';
-import { v4 as uuidv4 } from 'uuid';
 
 const request = require('supertest');
+
 const MAIN_ROUTE = '/v1/users';
 const LOGIN_ROUTE = '/v1/auth';
 const SIGNUP_ROUTE = '/v1/auth/signup';
@@ -146,14 +147,12 @@ test('Test #30 (user) - Update password but user does not exist', async () => {
 		});
 });
 
-test('Test #31 - Remove user', () => {
-	return request(app)
+test('Test #31 - Remove user', () => request(app)
 		.delete(`${MAIN_ROUTE}`)
 		.set('authorization', `Bearer ${jwt}`)
 		.then((res) => {
 			expect(res.status).toBe(204);
-		});
-});
+		}));
 
 test('Test #32 (user) - Update password', async () => {
 	const user_ = {

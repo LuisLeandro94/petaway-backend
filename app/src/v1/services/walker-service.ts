@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import Service from './service';
 import Walker from '~models/walker';
 import { ErrorHandler } from '~utils/middleware';
@@ -8,13 +9,16 @@ import WalkerPet from '~models/walker-pet';
 import WalkerResourceService from './walker-resource-service';
 import ResourceService from './resource-service';
 import PetService from './pet-service';
-import { Op } from 'sequelize';
 
 export default class WalkerService extends Service {
 	UserService: UserService;
+
 	WalkerPetService: WalkerPetService;
+
 	WalkerResourceService: WalkerResourceService;
+
 	ResourceService: ResourceService;
+
 	PetService: PetService;
 
 	constructor() {
@@ -41,14 +45,14 @@ export default class WalkerService extends Service {
 			}
 			let newWalker;
 
-			if (!(await this.any({ userId: userId }))) {
+			if (!(await this.any({ userId }))) {
 				newWalker = new Walker({
-					userId: userId,
+					userId,
 					isDeleted: false
 				});
 				await this.save(newWalker);
 			} else {
-				newWalker = await this.getSingle(null, [{ userId: userId }], null, null);
+				newWalker = await this.getSingle(null, [{ userId }], null, null);
 			}
 
 			await WalkerResource.destroy({

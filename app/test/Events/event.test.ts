@@ -43,7 +43,9 @@ let templateToTest_;
 let eventId;
 class Mocks {
 	addService: boolean = false;
+
 	addPet: boolean = false;
+
 	constructor(addService, addPet) {
 		this.addService = addService;
 		this.addPet = addPet;
@@ -100,15 +102,13 @@ beforeAll(async () => {
 	} catch (error) /* istanbul ignore next */ {}
 });
 
-test('Test #6 - Doing login', () => {
-	return request(app)
+test('Test #6 - Doing login', () => request(app)
 		.post(LOGIN_ROUTE)
 		.send({ email: user.email, password: user.password })
 		.then((res) => {
 			jwt = res.body.result;
 			expect(res.status).toBe(201);
-		});
-});
+		}));
 
 test('Test #7 - Create new event', async () => {
 	try {
@@ -130,36 +130,30 @@ test('Test #7 - Create new event', async () => {
 	} catch (error) /* istanbul ignore next */ {}
 });
 
-test('Test #8 - Get all events by user', () => {
-	return request(app)
+test('Test #8 - Get all events by user', () => request(app)
 		.get(`${MAIN_ROUTE}/user`)
 		.set('authorization', `Bearer ${templateToTest_.user_jwt}`)
 		.then((res) => {
 			expect(res.status).toBe(200);
 			expect(res.body.result.length).toBeGreaterThan(0);
-		});
-});
+		}));
 
-test('Test #9 -  Get all events by walker', () => {
-	return request(app)
+test('Test #9 -  Get all events by walker', () => request(app)
 		.get(`${MAIN_ROUTE}/walker?walkerId=${templateToTest_.walker.id}`)
 		.set('authorization', `Bearer ${templateToTest_.user_jwt}`)
 		.then((res) => {
 			expect(res.status).toBe(200);
 			expect(res.body.result.length).toBeGreaterThan(0);
-		});
-});
+		}));
 
-test('Test #10 - Update event status', async () => {
-	return request(app)
+test('Test #10 - Update event status', async () => request(app)
 		.put(`${MAIN_ROUTE}`)
-		.send({ eventId: eventId, status: 2 })
+		.send({ eventId, status: 2 })
 		.set('authorization', `Bearer ${templateToTest_.user_jwt}`)
 		.then((res) => {
 			expect(res.status).toBe(200);
 			expect(res.body.result).toHaveProperty('userId');
-		});
-});
+		}));
 
 test('Test #11 - Update event status bu event does not exist', async () => {
 	await Event.destroy({
@@ -169,7 +163,7 @@ test('Test #11 - Update event status bu event does not exist', async () => {
 	});
 	return request(app)
 		.put(`${MAIN_ROUTE}`)
-		.send({ eventId: eventId, status: 2 })
+		.send({ eventId, status: 2 })
 		.set('authorization', `Bearer ${templateToTest_.user_jwt}`)
 		.then((res) => {
 			expect(res.status).toBe(400);
@@ -184,8 +178,7 @@ describe('Test #12 - Create new event with erros ...', () => {
 		templateToTest = await new Mocks(false, false).templateToTest();
 	});
 
-	const testTemplate = async (data, errorMessage) => {
-		return await request(app)
+	const testTemplate = async (data, errorMessage) => await request(app)
 			.post(MAIN_ROUTE)
 			.send(data)
 			.set('authorization', `Bearer ${templateToTest_.user_jwt}`)
@@ -193,7 +186,6 @@ describe('Test #12 - Create new event with erros ...', () => {
 				expect(res.status).toBe(400);
 				expect(res.body.result).toBe(errorMessage);
 			});
-	};
 
 	test('Test #12.1.1 - Create new event without pets', () => {
 		testTemplate(
