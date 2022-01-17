@@ -8,6 +8,7 @@ import WalkerPet from '~models/walker-pet';
 import WalkerResourceService from './walker-resource-service';
 import ResourceService from './resource-service';
 import PetService from './pet-service';
+import { Op } from 'sequelize';
 
 export default class WalkerService extends Service {
 	UserService: UserService;
@@ -27,21 +28,14 @@ export default class WalkerService extends Service {
 
 	addOrUpdateWalker = async (userId: number, services: any[], pets: any[]) => {
 		try {
-			await Promise.all(
-				services.map(async (service) => {
-					if (!(await this.ResourceService.any({ id: service }))) {
-						throw new ErrorHandler('service does not exist', 500);
-					}
-				})
-			);
+			if (!(await this.ResourceService.any({ id: { [Op.in]: services } }))) {
+				throw new ErrorHandler('service does not exist', 500);
+			}
 
-			await Promise.all(
-				pets.map(async (pet) => {
-					if (!(await this.PetService.any({ id: pet }))) {
-						throw new ErrorHandler('service does not exist', 500);
-					}
-				})
-			);
+			if (!(await this.PetService.any({ id: { [Op.in]: pets } }))) {
+				throw new ErrorHandler('pet does not exist', 500);
+			}
+
 			if (!(await this.UserService.any({ id: userId }))) {
 				throw new ErrorHandler('user does not exist', 500);
 			}
@@ -74,7 +68,7 @@ export default class WalkerService extends Service {
 						throw new ErrorHandler('service does not exist', 500);
 					}
 					const newWalkerService = new WalkerResource({
-						walkerId: userId,
+						walkerId: newWalker.id,
 						serviceId: service
 					});
 					await this.WalkerResourceService.save(newWalkerService);
@@ -87,7 +81,7 @@ export default class WalkerService extends Service {
 						throw new ErrorHandler('service does not exist', 500);
 					}
 					const newWalkerPet = new WalkerPet({
-						walkerId: userId,
+						walkerId: newWalker.id,
 						petId: pet
 					});
 					await this.PetService.save(newWalkerPet);

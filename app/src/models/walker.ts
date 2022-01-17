@@ -1,5 +1,7 @@
-import { DataTypes, Model } from 'sequelize';
+import { Association, DataTypes, Model } from 'sequelize';
 import { sequelize } from './index';
+import Pet from './pet';
+import Resource from './resource';
 
 interface IWalkerAttributes {
 	id?: number;
@@ -15,6 +17,14 @@ export default class Walker extends Model<IWalkerAttributes> implements IWalkerA
 	userId: number;
 
 	isDeleted?: boolean;
+
+	public readonly services?: Resource;
+	public readonly pets?: Pet;
+
+	public readonly associations: {
+		services: Association<Resource, Walker>;
+		pets: Association<Pet, Walker>;
+	};
 }
 Walker.init(
 	{
@@ -32,7 +42,7 @@ Walker.init(
 			allowNull: false,
 			type: DataTypes.BOOLEAN,
 			defaultValue: false
-		},
+		}
 	},
 	{
 		sequelize,

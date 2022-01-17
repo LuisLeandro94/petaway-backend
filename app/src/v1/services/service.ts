@@ -12,18 +12,21 @@ export default abstract class Service {
 		limit?: number,
 		orderField?: string,
 		order?: string,
-		includes?: string[],
+		includes?: any[],
 		predicate?: any,
-		attributes?: string[]
+		attributes?: string[],
+		excludeAttributes?: string[]
 	): Promise<any[]> => {
 		try {
+			orderField = orderField ? orderField : 'id';
+			order = order ? order : 'asc';
 			const results = await this.model.findAll({
 				include: includes || '',
 				where: predicate || {},
-				offset,
-				limit,
-				order,
-				attributes
+				offset: offset || 0,
+				limit: limit || null,
+				order: [[orderField, order]],
+				attributes: { exclude: excludeAttributes, attributes }
 			});
 
 			return results;
