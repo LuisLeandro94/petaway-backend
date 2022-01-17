@@ -45,7 +45,7 @@ test('Test #2 - Doing login with wrong user', async () => {
 		.send({ email: `${user.email} not_yet`, password: user.password })
 		.then((res) => {
 			expect(res.status).toBe(500);
-			expect(res.body.result).toBe('Error: user does not exist');
+			expect(res.body.result).toBe('User does not exist');
 		});
 });
 

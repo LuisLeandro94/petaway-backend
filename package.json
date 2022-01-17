@@ -6,13 +6,15 @@
 	"scripts": {
 		"start": "node ./dist/src/server.js",
 		"build": "rm -rf dist && tsc -p tsconfig.json",
-		"watch": "nodemon --exec \"npm run build && npm run start\" --watch app --ext ts",
-		"debug": "nodemon --exec \"tsc -p tsconfig.json && npm run start\" --watch app --ext ts",
-		"db:migrate": "sequelize-cli db:migrate",
-		"db:seed": "sequelize-cli db:seed:all",
+		"run": "NODE_ENV=production nodemon --exec \"npm run build && npm run start\" --watch app --ext ts",
+		"debug": "NODE_ENV=development && nodemon --exec \"tsc -p tsconfig.json && npm run start\" --watch app --ext ts",
+		"db:migrate:prod": "NODE_ENV=production && sequelize-cli db:migrate",
+		"db:seed:prod": "NODE_ENV=production && sequelize-cli db:seed:all",
+		"db:migrate:dev": "NODE_ENV=development && sequelize-cli db:migrate",
+		"db:seed:dev": "NODE_ENV=development && sequelize-cli db:seed:all",
 		"lint": "eslint . --ext .ts",
 		"prettier": "prettier --config ./.prettierrc --write app/*",
-		"secure-mode": "npm run build && jest --watchAll --verbose --testPathPattern=dist/test"
+		"test": "NODE_ENV=development && npm run build && jest --watchAll --verbose --testPathPattern=dist/test"
 	},
 	"husky": {
 		"hooks": {

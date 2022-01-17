@@ -19,7 +19,7 @@ export default class WalkerController {
 			const { services, pets } = req.body;
 			const userId = req.user_id;
 			if (await this.WalkerService.any({ userId: userId })) {
-				throw new ErrorHandler('user already is a walker', 400);
+				throw new ErrorHandler('User already is a walker', 400);
 			}
 			const response = await this.WalkerService.addOrUpdateWalker(userId, services, pets);
 			res.status(201).json(new ResponseHandler(true, 201, response));
@@ -32,7 +32,7 @@ export default class WalkerController {
 			const { services, pets } = req.body;
 			const userId = req.user_id;
 			if (!(await this.WalkerService.any({ userId: userId }))) {
-				throw new ErrorHandler('user is not a walker', 400);
+				throw new ErrorHandler('User is not a walker', 400);
 			}
 			const response = await this.WalkerService.addOrUpdateWalker(userId, services, pets);
 			res.status(200).json(new ResponseHandler(true, 200, response));
@@ -44,9 +44,6 @@ export default class WalkerController {
 	deleteWalker = async (req: Request, res: Response): Promise<void> => {
 		try {
 			const userId = req.user_id;
-			if (!(await this.WalkerService.any({ userId: userId }))) {
-				throw new ErrorHandler('user is not a walker', 400);
-			}
 			const walker = await this.WalkerService.delete([{ userId: userId }]);
 			res.status(204).json(new ResponseHandler(true, 204, walker));
 		} catch (error) /* istanbul ignore next */ {
@@ -91,8 +88,22 @@ export default class WalkerController {
 
 	getWalkerById = async (req: Request, res: Response): Promise<void> => {
 		try {
-			const { id } = req.query;
-			const response = await this.WalkerService.getSingle(null, [{ id: id }], null, null);
+			const { userId } = req.query;
+			const response = await this.WalkerService.getSingle(
+				[
+					{
+						model: Resource,
+						as: 'services'
+					},
+					{
+						model: Pet,
+						as: 'pets'
+					}
+				],
+				[{ userId }],
+				null,
+				null
+			);
 			res.status(200).json(new ResponseHandler(true, 200, response));
 		} catch (error) /* istanbul ignore next */ {
 			res.status(error.code).json(new ResponseHandler(false, error.code, error.message));

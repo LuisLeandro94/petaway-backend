@@ -32,7 +32,7 @@ beforeAll(async () => {
 		.catch((err) => console.log(`Error: ${err}`));
 });
 
-test('Test #13 - Doing login', () => {
+test('Test #19 - Doing login', () => {
 	return request(app)
 		.post(LOGIN_ROUTE)
 		.send({ email: user.email, password: user.password })
@@ -42,7 +42,7 @@ test('Test #13 - Doing login', () => {
 		});
 });
 
-test('Test #15 - Get single service by id with login', async () => {
+test('Test #20 - Get single service by id with login', async () => {
 	const service = new Resource({ type: 'Pet walking' });
 	await resourceService.save(service);
 	return request(app)
@@ -54,7 +54,7 @@ test('Test #15 - Get single service by id with login', async () => {
 		});
 });
 
-test("Test #17 - Get single service by id but service dosen't exist", async () => {
+test("Test #21 - Get single service by id but service dosen't exist", async () => {
 	await Resource.destroy({
 		where: {
 			id: 2000
@@ -69,7 +69,7 @@ test("Test #17 - Get single service by id but service dosen't exist", async () =
 		});
 });
 
-test('Test #19 - Get single service by id without login', () => {
+test('Test #22 - Get single service by id without login', () => {
 	return request(app)
 		.get(`${MAIN_ROUTE}/${1}`)
 		.then((res) => {
@@ -78,7 +78,7 @@ test('Test #19 - Get single service by id without login', () => {
 		});
 });
 
-test('Test #14 - Get all services with login', async () => {
+test('Test #23 - Get all services with login', async () => {
 	const service = new Resource({ type: 'Pet sitter' });
 	await resourceService.save(service);
 
@@ -92,7 +92,7 @@ test('Test #14 - Get all services with login', async () => {
 		});
 });
 
-test('Test #18 - Get all services without login', async () => {
+test('Test #24 - Get all services without login', async () => {
 	const service = new Resource({ type: 'Pet sitter' });
 	await resourceService.save(service);
 

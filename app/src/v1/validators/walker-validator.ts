@@ -2,7 +2,7 @@
 const WALKER_VALIDATOR = {
 	GET_BY_ID: [
 		{
-			paramKey: 'id',
+			paramKey: 'userId',
 			required: true,
 			type: 'number',
 			validatorFunctions: [(param) => param.length > 0]

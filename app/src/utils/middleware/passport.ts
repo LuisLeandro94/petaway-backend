@@ -20,7 +20,7 @@ class JWT {
 			}
 
 			jwt.verify(token, jwtTokenCached.jwt_signature, function (err, decoded) {
-				if (err) return res.status(500).json(new ResponseHandler(false, 401, 'Failed to authenticate token.'));
+				if (err) return res.status(401).json(new ResponseHandler(false, 401, 'Failed to authenticate token.'));
 				req.user_id = decoded.userId;
 				next();
 			});

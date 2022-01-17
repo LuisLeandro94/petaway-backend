@@ -32,11 +32,4 @@ app.use('/v1', new JWT().verifyJWT, PetRoute);
 app.use('/v1', new JWT().verifyJWT, WalkerRoute);
 app.use('/v1', new JWT().verifyJWT, EventRoute);
 
-app.use((err, req, res, next) => {
-	const { name, message, stack } = err;
-	if (name === 'validationError') res.status(400).json({ error: message });
-	else res.status(500).json({ name, message, stack });
-	next(err);
-});
-
 export default app;

@@ -29,15 +29,15 @@ export default class WalkerService extends Service {
 	addOrUpdateWalker = async (userId: number, services: any[], pets: any[]) => {
 		try {
 			if (!(await this.ResourceService.any({ id: { [Op.in]: services } }))) {
-				throw new ErrorHandler('service does not exist', 400);
+				throw new ErrorHandler('Service does not exist', 400);
 			}
 
 			if (!(await this.PetService.any({ id: { [Op.in]: pets } }))) {
-				throw new ErrorHandler('pet does not exist', 400);
+				throw new ErrorHandler('Pet does not exist', 400);
 			}
 
 			if (!(await this.UserService.any({ id: userId }))) {
-				throw new ErrorHandler('user does not exist', 400);
+				throw new ErrorHandler('User does not exist', 400);
 			}
 			let newWalker;
 
@@ -89,8 +89,8 @@ export default class WalkerService extends Service {
 			);
 
 			return newWalker;
-		} catch (error) /* istanbul ignore next */  {
-			throw new ErrorHandler(error);
+		} catch (error) /* istanbul ignore next */ {
+			throw new ErrorHandler(error.message, error.code);
 		}
 	};
 }

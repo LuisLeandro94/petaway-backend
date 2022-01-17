@@ -20,7 +20,7 @@ export default class UserService extends Service {
 			const user: User = await this.getSingle(null, [{ email, password }], null, null);
 
 			if (!user) {
-				throw new ErrorHandler('user does not exist', 400);
+				throw new ErrorHandler('User does not exist', 400);
 			}
 			const jwt_signature: string = uuidv4();
 
@@ -36,7 +36,7 @@ export default class UserService extends Service {
 
 			return jwtToken;
 		} catch (error) /* istanbul ignore next */  {
-			throw new ErrorHandler(error);
+			throw new ErrorHandler(error.message, error.code);
 		}
 	};
 
@@ -60,7 +60,7 @@ export default class UserService extends Service {
 			}
 			throw new ErrorHandler('Email already in use', 400);
 		} catch (error) /* istanbul ignore next */{
-			throw new ErrorHandler(error, error.code);
+			throw new ErrorHandler(error.message, error.code);
 		}
 	};
 }

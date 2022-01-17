@@ -21,7 +21,7 @@ WalkerRoute.get(
 	new WalkerController().getAllWalkers
 );
 WalkerRoute.get(
-	'/walkers/:id',
+	'/walkers/:userId',
 	new ParamsHandler().validateParams(WALKER_VALIDATOR.GET_BY_ID),
 	new WalkerController().getWalkerById
 );

@@ -67,7 +67,6 @@ export default class EventController {
 			const response = await this.EventService.get(null, null, null, null, null, { userId });
 			res.status(200).json(new ResponseHandler(true, 200, response));
 		} catch (error) /* istanbul ignore next */  {
-			console.log(error);
 			res.status(error.code).json(new ResponseHandler(false, error.code, error.message));
 		}
 	};

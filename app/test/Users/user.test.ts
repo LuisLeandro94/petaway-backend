@@ -34,7 +34,7 @@ beforeAll(async () => {
 		.catch((err) => console.log(`Error: ${err}`));
 });
 
-test('Test #20 - Doing login', async () => {
+test('Test #25 - Doing login', async () => {
 	await request(app)
 		.post(LOGIN_ROUTE)
 		.send({ email: user.email, password: user.password })
@@ -44,11 +44,11 @@ test('Test #20 - Doing login', async () => {
 		});
 });
 
-test('Test #22 - Get single user by id', async () => {
+test('Test #26 - Get single user by jwt', async () => {
 	try {
 		const user_ = await userService.signup(`${Date.now()}@petaway.pt,`, '123456789', 'carlos', 'Panado', '4845-024');
 		const responseLogin = await request(app).post(LOGIN_ROUTE).send({ email: user_.email, password: user_.password });
-		return request(app)
+		return await request(app)
 			.get(`${MAIN_ROUTE}`)
 			.set({ authorization: `Bearer ${responseLogin.body.result}` })
 			.then((res) => {
@@ -56,32 +56,44 @@ test('Test #22 - Get single user by id', async () => {
 				expect(res.body.result.userData.lastName).toBe('Panado');
 				expect(res.body.result.id).toBe(user_.id);
 			});
-	} catch (error) /* istanbul ignore next */  {}
+	} catch (error) {}
 });
 
-test("Test #22.2 - Get single user by id  but user dosen't exist", async () => {
+test('Test #27 - Get single user by id', async () => {
 	try {
-		const jwt_signature: string = uuidv4();
-
-		const redisClient: RedisClient = new RedisClient();
-
-		const jwtToken = jwt.sign({ userId: 999999999999 }, jwt_signature, {
-			expiresIn: '24h'
-		});
-
-		await redisClient.set(jwtToken, JSON.stringify({ jwt_signature }));
-
-		return request(app)
-			.get(`${MAIN_ROUTE}`)
-			.set({ authorization: `Bearer ${jwtToken}` })
+		const user_ = await userService.signup(`${Date.now()}@petaway.pt,`, '123456789', 'carlos', 'Panado', '4845-024');
+		const responseLogin = await request(app).post(LOGIN_ROUTE).send({ email: user_.email, password: user_.password });
+		return await request(app)
+			.get(`${MAIN_ROUTE}/${user_.id}`)
+			.set({ authorization: `Bearer ${responseLogin.body.result}` })
 			.then((res) => {
-				expect(res.status).toBe(500);
+				expect(res.status).toBe(200);
+				expect(res.body.result.userData.lastName).toBe('Panado');
+				expect(res.body.result.id).toBe(user_.id);
+			});
+	} catch (error) {}
+});
+
+test("Test #28 - Get single user by id  but user dosen't exist", async () => {
+	try {
+		const user_ = await userService.signup(`${Date.now()}@petaway.pt,`, '123456789', 'carlos', 'Panado', '4845-024');
+		const responseLogin = await request(app).post(LOGIN_ROUTE).send({ email: user_.email, password: user_.password });
+		await User.destroy({
+			where: {
+				id: user_.id
+			}
+		});
+		return await request(app)
+			.get(`${MAIN_ROUTE}`)
+			.set({ authorization: `Bearer ${responseLogin.body.result}` })
+			.then((res) => {
+				expect(res.status).toBe(400);
 				expect(res.body.result).toBe('User does not exist');
 			});
-	} catch (error) /* istanbul ignore next */  {}
+	} catch (error) {}
 });
 
-test('Test #23 - Update user', async () => {
+test('Test #29 - Update user', async () => {
 	const user_ = {
 		email: `${Date.now()}@petaway.pt`,
 		password: 'test€€€€',
@@ -91,7 +103,7 @@ test('Test #23 - Update user', async () => {
 	};
 	const userAdded = await request(app).post(SIGNUP_ROUTE).send(user_);
 	const responseLogin = await request(app).post(LOGIN_ROUTE).send({ email: user_.email, password: user_.password });
-	return request(app)
+	return await request(app)
 		.put(`${MAIN_ROUTE}`)
 		.send({
 			firstName: 'Carlos',
@@ -114,7 +126,27 @@ test('Test #23 - Update user', async () => {
 		});
 });
 
-test('Test #24 - Remove user', () => {
+test('Test #30 (user) - Update password but user does not exist', async () => {
+	const user_ = await userService.signup(`${Date.now()}@petaway.pt,`, 'test€€€€', 'Marco', 'Tinta', '4845-024');
+	const responseLogin_ = await request(app).post(LOGIN_ROUTE).send({ email: user_.email, password: user_.password });
+	await User.destroy({
+		where: {
+			id: user_.id
+		}
+	});
+	return await request(app)
+		.put(`${MAIN_ROUTE}/password`)
+		.send({
+			password: 'newPassword'
+		})
+		.set('authorization', `Bearer ${responseLogin_.body.result}`)
+		.then((res) => {
+			expect(res.status).toBe(400);
+			expect(res.body.result).toBe('User does not exist');
+		});
+});
+
+test('Test #31 - Remove user', () => {
 	return request(app)
 		.delete(`${MAIN_ROUTE}`)
 		.set('authorization', `Bearer ${jwt}`)
@@ -123,7 +155,7 @@ test('Test #24 - Remove user', () => {
 		});
 });
 
-test('Test #25 (user) - Update password', async () => {
+test('Test #32 (user) - Update password', async () => {
 	const user_ = {
 		email: `${Date.now()}@petaway.pt`,
 		password: 'test€€€€',
@@ -133,7 +165,7 @@ test('Test #25 (user) - Update password', async () => {
 	};
 	await request(app).post(SIGNUP_ROUTE).send(user_);
 	const responseLogin = await request(app).post(LOGIN_ROUTE).send({ email: user_.email, password: user_.password });
-	return request(app)
+	return await request(app)
 		.put(`${MAIN_ROUTE}/password`)
 		.send({
 			password: 'newPassword'
@@ -143,3 +175,36 @@ test('Test #25 (user) - Update password', async () => {
 			expect(res.status).toBe(200);
 		});
 });
+
+
+test('Test #33 - Update user but user does not exist', async () => {
+	const user_ = await userService.signup(`${Date.now()}@petaway.pt,`, 'test€€€€', 'Marco', 'Tinta', '4845-024');
+	const responseLogin = await request(app).post(LOGIN_ROUTE).send({ email: user_.email, password: user_.password });
+	await User.destroy({
+		where: {
+			id: user_.id
+		}
+	});
+	return await request(app)
+		.put(`${MAIN_ROUTE}`)
+		.send({
+			firstName: 'Carlos',
+			lastName: 'Litos',
+			address_1: 'Rua da luz',
+			address_2: 'Rua da luz 2',
+			city: 'Braga',
+			state: 'Braga',
+			zip: '4845-220',
+			country: 'Portugal',
+			profilePhoto: 'avatar.jpg',
+			birthdate: '29/12/1999',
+			phoneNumber: '928182882882'
+		})
+		.set('authorization', `Bearer ${responseLogin.body.result}`)
+		.then((res) => {
+			expect(res.status).toBe(400);
+			expect(res.body.result).toBe('User does not exist');
+		});
+});
+
+
