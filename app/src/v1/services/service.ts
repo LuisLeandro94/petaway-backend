@@ -18,8 +18,8 @@ export default abstract class Service {
 		excludeAttributes?: string[]
 	): Promise<any[]> => {
 		try {
-			orderField = orderField ? orderField : 'id';
-			order = order ? order : 'asc';
+			orderField = orderField || 'id';
+			order = order || 'asc';
 			const results = await this.model.findAll({
 				include: includes || '',
 				where: predicate || {},

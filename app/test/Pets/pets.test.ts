@@ -1,11 +1,13 @@
-export {};
 import { sequelize } from '~models';
 import { PetService, UserService } from '~v1/services';
 import Relations from '~models/relations';
 import User from '~models/user';
 import Pet from '~models/pet';
 
+export {};
+
 const request = require('supertest');
+
 const MAIN_ROUTE = '/v1/pets';
 const LOGIN_ROUTE = '/v1/auth';
 
@@ -32,17 +34,15 @@ beforeAll(async () => {
 		.catch((err) => console.log(`Error: ${err}`));
 });
 
-test('Test #8 - Doing login', () => {
-	return request(app)
+test('Test #13 - Doing login', () => request(app)
 		.post(LOGIN_ROUTE)
 		.send({ email: user.email, password: user.password })
 		.then((res) => {
 			jwt = res.body.result;
 			expect(res.status).toBe(201);
-		});
-});
+		}));
 
-test('Test #9 - Get All Pets with login', async () => {
+test('Test #14 - Get All Pets with login', async () => {
 	const pet = new Pet({ type: 'Dog' });
 	await petService.save(pet);
 	return request(app)
@@ -54,7 +54,7 @@ test('Test #9 - Get All Pets with login', async () => {
 		});
 });
 
-test('Test #11 - Get All Pets without login', async () => {
+test('Test #15 - Get All Pets without login', async () => {
 	const pet = new Pet({ type: 'Cat' });
 	await petService.save(pet);
 	return request(app)
@@ -65,7 +65,7 @@ test('Test #11 - Get All Pets without login', async () => {
 		});
 });
 
-test('Test #10 - Get single Pet by id with login', async () => {
+test('Test #16 - Get single Pet by id with login', async () => {
 	const pet = new Pet({ type: 'Cat' });
 	await petService.save(pet);
 	return request(app)
@@ -77,7 +77,7 @@ test('Test #10 - Get single Pet by id with login', async () => {
 		});
 });
 
-test('Test #10.1 - Get single Pet but does not exit', async () => {
+test('Test #17 - Get single Pet but does not exit', async () => {
 	const pet = new Pet({ type: 'Cat' });
 	const addedPet = await petService.save(pet);
 	const petIdToTest = addedPet.id;
@@ -95,11 +95,9 @@ test('Test #10.1 - Get single Pet but does not exit', async () => {
 		});
 });
 
-test('Test #12 - Get single Pet by id without login', () => {
-	return request(app)
+test('Test #18 - Get single Pet by id without login', () => request(app)
 		.get(`${MAIN_ROUTE}/${1}`)
 		.then((res) => {
 			expect(res.status).toBe(401);
 			expect(res.body.result).toBe('Failed to authenticate token.');
-		});
-});
+		}));

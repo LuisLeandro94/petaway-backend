@@ -15,11 +15,17 @@ import Event from '~models/event';
 
 export default class EventController {
 	EventService: EventService;
+
 	WalkerService: WalkerService;
+
 	UserService: UserService;
+
 	WalkerPetService: WalkerPetService;
+
 	WalkerResourceService: WalkerResourceService;
+
 	ResourceService: ResourceService;
+
 	PetService: PetService;
 
 	constructor() {
@@ -40,18 +46,18 @@ export default class EventController {
 			if (!(await this.WalkerService.any({ id: walkerId }))) {
 				throw new ErrorHandler('Walker does not exist', 400);
 			}
-			if (!(await this.WalkerPetService.any({ walkerId: walkerId, petId: petId }))) {
+			if (!(await this.WalkerPetService.any({ walkerId, petId }))) {
 				throw new ErrorHandler('Walker does not have this pet', 400);
 			}
-			if (!(await this.WalkerResourceService.any({ walkerId: walkerId, serviceId: serviceId }))) {
+			if (!(await this.WalkerResourceService.any({ walkerId, serviceId }))) {
 				throw new ErrorHandler('Walker does not have this service', 400);
 			}
 			const event = new Event({
-				userId: userId,
-				walkerId: walkerId,
+				userId,
+				walkerId,
 				resourceId: serviceId,
-				petId: petId,
-				date: date,
+				petId,
+				date,
 				status: EventStatus.Created as number
 			});
 			await this.EventService.save(event);
@@ -67,7 +73,6 @@ export default class EventController {
 			const response = await this.EventService.get(null, null, null, null, null, { userId });
 			res.status(200).json(new ResponseHandler(true, 200, response));
 		} catch (error) /* istanbul ignore next */  {
-			console.log(error);
 			res.status(error.code).json(new ResponseHandler(false, error.code, error.message));
 		}
 	};

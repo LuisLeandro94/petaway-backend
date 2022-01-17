@@ -43,7 +43,9 @@ let templateToTest_;
 let eventId;
 class Mocks {
 	addService: boolean = false;
+
 	addPet: boolean = false;
+
 	constructor(addService, addPet) {
 		this.addService = addService;
 		this.addPet = addPet;
@@ -100,17 +102,15 @@ beforeAll(async () => {
 	} catch (error) /* istanbul ignore next */ {}
 });
 
-test('Test #31 - Doing login', () => {
-	return request(app)
+test('Test #6 - Doing login', () => request(app)
 		.post(LOGIN_ROUTE)
 		.send({ email: user.email, password: user.password })
 		.then((res) => {
 			jwt = res.body.result;
 			expect(res.status).toBe(201);
-		});
-});
+		}));
 
-test('Test #33 - Create new event', async () => {
+test('Test #7 - Create new event', async () => {
 	try {
 		const dataRequest = {
 			petId: templateToTest_.newPet.id,
@@ -130,38 +130,32 @@ test('Test #33 - Create new event', async () => {
 	} catch (error) /* istanbul ignore next */ {}
 });
 
-test('Test #34 - Get all events by user', () => {
-	return request(app)
+test('Test #8 - Get all events by user', () => request(app)
 		.get(`${MAIN_ROUTE}/user`)
 		.set('authorization', `Bearer ${templateToTest_.user_jwt}`)
 		.then((res) => {
 			expect(res.status).toBe(200);
 			expect(res.body.result.length).toBeGreaterThan(0);
-		});
-});
+		}));
 
-test('Test #35 -  Get all events by walker', () => {
-	return request(app)
+test('Test #9 -  Get all events by walker', () => request(app)
 		.get(`${MAIN_ROUTE}/walker?walkerId=${templateToTest_.walker.id}`)
 		.set('authorization', `Bearer ${templateToTest_.user_jwt}`)
 		.then((res) => {
 			expect(res.status).toBe(200);
 			expect(res.body.result.length).toBeGreaterThan(0);
-		});
-});
+		}));
 
-test('Test #36 - Update event status', async () => {
-	return request(app)
+test('Test #10 - Update event status', async () => request(app)
 		.put(`${MAIN_ROUTE}`)
-		.send({ eventId: eventId, status: 2 })
+		.send({ eventId, status: 2 })
 		.set('authorization', `Bearer ${templateToTest_.user_jwt}`)
 		.then((res) => {
 			expect(res.status).toBe(200);
 			expect(res.body.result).toHaveProperty('userId');
-		});
-});
+		}));
 
-test('Test #36 - Update event status bu event does not exist', async () => {
+test('Test #11 - Update event status bu event does not exist', async () => {
 	await Event.destroy({
 		where: {
 			id: eventId
@@ -169,7 +163,7 @@ test('Test #36 - Update event status bu event does not exist', async () => {
 	});
 	return request(app)
 		.put(`${MAIN_ROUTE}`)
-		.send({ eventId: eventId, status: 2 })
+		.send({ eventId, status: 2 })
 		.set('authorization', `Bearer ${templateToTest_.user_jwt}`)
 		.then((res) => {
 			expect(res.status).toBe(400);
@@ -177,15 +171,14 @@ test('Test #36 - Update event status bu event does not exist', async () => {
 		});
 });
 
-describe('Test #33.1 - Create new event with erros ...', () => {
+describe('Test #12 - Create new event with erros ...', () => {
 	let templateToTest;
 
 	beforeAll(async () => {
 		templateToTest = await new Mocks(false, false).templateToTest();
 	});
 
-	const testTemplate = async (data, errorMessage) => {
-		return await request(app)
+	const testTemplate = async (data, errorMessage) => await request(app)
 			.post(MAIN_ROUTE)
 			.send(data)
 			.set('authorization', `Bearer ${templateToTest_.user_jwt}`)
@@ -193,9 +186,8 @@ describe('Test #33.1 - Create new event with erros ...', () => {
 				expect(res.status).toBe(400);
 				expect(res.body.result).toBe(errorMessage);
 			});
-	};
 
-	test('Test #33.1.1 - Create new event without pets', () => {
+	test('Test #12.1.1 - Create new event without pets', () => {
 		testTemplate(
 			{
 				serviceId: templateToTest.newService.id,
@@ -206,7 +198,7 @@ describe('Test #33.1 - Create new event with erros ...', () => {
 			'Missing Parameter petId'
 		);
 	});
-	test('Test #33.1.2 -  Create new event without service', () => {
+	test('Test #12.1.2 -  Create new event without service', () => {
 		testTemplate(
 			{
 				petId: templateToTest.newPet.id,
@@ -217,7 +209,7 @@ describe('Test #33.1 - Create new event with erros ...', () => {
 			'Missing Parameter serviceId'
 		);
 	});
-	test('Test #33.1.4 - Create new event without walker', () => {
+	test('Test #12.1.4 - Create new event without walker', () => {
 		testTemplate(
 			{
 				petId: templateToTest.newPet.id,
@@ -228,7 +220,7 @@ describe('Test #33.1 - Create new event with erros ...', () => {
 			'Missing Parameter walkerId'
 		);
 	});
-	test('Test #33.1.4 - Create new event without date', () => {
+	test('Test #12.1.4 - Create new event without date', () => {
 		testTemplate(
 			{
 				petId: templateToTest.newPet.id,
@@ -239,14 +231,14 @@ describe('Test #33.1 - Create new event with erros ...', () => {
 			'Missing Parameter date'
 		);
 	});
-	test('Test #33.1.5 - Create new event but walker does not exist', async () => {
+	test('Test #12.1.5 - Create new event but walker does not exist', async () => {
 		const newTemplateToTest = await new Mocks(true, true).templateToTest();
 		await Walker.destroy({
 			where: {
 				id: newTemplateToTest.walker.id
 			}
 		});
-		testTemplate(
+		await testTemplate(
 			{
 				petId: newTemplateToTest.newPet.id,
 				serviceId: newTemplateToTest.newService.id,
@@ -256,14 +248,14 @@ describe('Test #33.1 - Create new event with erros ...', () => {
 			'Walker does not exist'
 		);
 	});
-	test('Test #33.1.6 - Create new event but walker does not have pet', async () => {
+	test('Test #12.1.6 - Create new event but walker does not have pet', async () => {
 		const newTemplateToTest = await new Mocks(true, true).templateToTest();
 		await WalkerPet.destroy({
 			where: {
 				petId: newTemplateToTest.newPet.id
 			}
 		});
-		testTemplate(
+		await testTemplate(
 			{
 				petId: newTemplateToTest.newPet.id,
 				serviceId: newTemplateToTest.newService.id,
@@ -273,14 +265,14 @@ describe('Test #33.1 - Create new event with erros ...', () => {
 			'Walker does not have this pet'
 		);
 	});
-	test('Test #33.1.7 - Create new event but walker does not have service', async () => {
+	test('Test #12.1.7 - Create new event but walker does not have service', async () => {
 		const newTemplateToTest = await new Mocks(true, true).templateToTest();
 		await WalkerResource.destroy({
 			where: {
 				serviceId: newTemplateToTest.newService.id
 			}
 		});
-		testTemplate(
+		await testTemplate(
 			{
 				petId: newTemplateToTest.newPet.id,
 				serviceId: newTemplateToTest.newService.id,

@@ -6,6 +6,7 @@ import WalkerService from './walker-service';
 import EventService from './event-service';
 import WalkerPetService from './walker-pet-service';
 import WalkerResourceService from './walker-resource-service';
+
 export {
 	UserService,
 	UserDataService,

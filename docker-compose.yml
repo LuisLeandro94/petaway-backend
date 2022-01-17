@@ -1,0 +1,54 @@
+version: '3'
+services:
+  redis-petaway-api:
+    image: redis
+    container_name: redis-petaway-api
+    expose:
+      - 6379
+  petaway-api:
+    restart: always
+    build:
+      context: ./  
+    depends_on:
+      - database-petaway-api-dev
+      - database-petaway-api-prod
+    image: n-app
+    #volumes setting
+    volumes:
+      - ./:/usr/src/app/petaway-api
+    #Container name
+    container_name: petaway-api
+    #Port connection
+    ports:                          
+      - 3000:5000
+    links:
+      - redis-petaway-api        
+    tty: true
+  database-petaway-api-dev:
+    image: postgres:12.3
+    ports:
+      -  5454:5454
+    environment:
+      POSTGRES_DB: petaway_dev
+      POSTGRES_HOST_AUTH_METHOD: trust
+  database-petaway-api-prod:
+    image: postgres:12.3
+    ports:
+      -  5464:5464
+    environment:
+      POSTGRES_DB: petaway_prod
+      POSTGRES_HOST_AUTH_METHOD: trust
+  pg-admin-petaway-api:
+    image: dpage/pgadmin4:latest
+    container_name: pg-admin-petaway-api
+    ports:
+      - "15432:80"
+    environment:
+      - GUNICORN_THREADS=1
+      - PGADMIN_DEFAULT_EMAIL=root@root.com
+      - PGADMIN_DEFAULT_PASSWORD=root
+    depends_on:
+      -  database-petaway-api-dev
+      -  database-petaway-api-prod
+  
+

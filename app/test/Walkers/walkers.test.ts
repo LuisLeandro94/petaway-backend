@@ -42,17 +42,16 @@ beforeAll(async () => {
 		.catch((err) => console.log(`Error: ${err}`));
 });
 
-test('Test #25 - Doing login', () => {
-	return request(app)
+test('Test #34 - Doing login', () =>
+	request(app)
 		.post(LOGIN_ROUTE)
 		.send({ email: user.email, password: user.password })
 		.then((res) => {
 			jwt = res.body.result;
 			expect(res.status).toBe(201);
-		});
-});
+		}));
 
-test('Test #26 - Get all walkers', async () => {
+test('Test #35 - Get all walkers', async () => {
 	walker = new Walker({
 		userId: user.id
 	});
@@ -72,9 +71,9 @@ test('Test #26 - Get all walkers', async () => {
 		});
 });
 
-test('Test #27 - Get single walker by id', () => {
-	return request(app)
-		.get(`${MAIN_ROUTE}/${walker.id}`)
+test('Test #36 - Get single walker by id', () => {
+	request(app)
+		.get(`${MAIN_ROUTE}/${user.id}`)
 		.set('authorization', `Bearer ${jwt}`)
 		.then((res) => {
 			expect(res.status).toBe(200);
@@ -82,7 +81,7 @@ test('Test #27 - Get single walker by id', () => {
 		});
 });
 
-test('Test #28 - Create walker', async () => {
+test('Test #37 - Create walker', async () => {
 	try {
 		const newPet = new Pet({ type: 'Pet 1' });
 		await petService.save(newPet);
@@ -102,10 +101,29 @@ test('Test #28 - Create walker', async () => {
 				expect(res.status).toBe(201);
 				expect(res.body.result).toHaveProperty('id');
 			});
-	} catch (error) /* istanbul ignore next */  {}
+	} catch (error) /* istanbul ignore next */ {}
 });
 
-test('Test #28.1 - Update walker service and pets', async () => {
+test('Test #38 - Create walker but user already has walker', async () => {
+	try {
+		const newPet = new Pet({ type: 'Pet 1' });
+		await petService.save(newPet);
+
+		const newService = new Resource({ type: 'Service 1' });
+		await resourceService.save(newService);
+
+		return request(app)
+			.post(`${MAIN_ROUTE}`)
+			.send({ pets: [newPet.id], services: [newService.id] })
+			.set('authorization', `Bearer ${user_jwt}`)
+			.then((res) => {
+				expect(res.status).toBe(400);
+				expect(res.body.result).toBe('User already is a walker');
+			});
+	} catch (error) /* istanbul ignore next */ {}
+});
+
+test('Test #39 - Update walker service and pets', async () => {
 	const newPet = new Pet({ type: 'Pet 3' });
 	await petService.save(newPet);
 
@@ -122,16 +140,35 @@ test('Test #28.1 - Update walker service and pets', async () => {
 		});
 });
 
-test('Test #29 - Remove walker', () => {
+test('Test #40 - Update walker but user is not a walker', async () => {
+	const newPet = new Pet({ type: 'Pet 3' });
+	await petService.save(newPet);
+
+	const newService = new Resource({ type: 'Service 3' });
+	await resourceService.save(newService);
+
+	user_ = await userService.signup(`${Date.now()}@petaway.pt,`, '123456789', 'Bruno', 'Faria', '4845-024');
+	const responseLogin = await request(app).post(LOGIN_ROUTE).send({ email: user_.email, password: user_.password });
+
 	return request(app)
+		.put(`${MAIN_ROUTE}`)
+		.send({ pets: [newPet.id], services: [newService.id] })
+		.set('authorization', `Bearer ${responseLogin.body.result}`)
+		.then((res) => {
+			expect(res.status).toBe(400);
+			expect(res.body.result).toBe('User is not a walker');
+		});
+});
+
+test('Test #41 - Remove walker', () =>
+	request(app)
 		.delete(`${MAIN_ROUTE}`)
 		.set('authorization', `Bearer ${user_jwt}`)
 		.then((res) => {
 			expect(res.status).toBe(204);
-		});
-});
+		}));
 
-describe('Test #30.1 - Create walker with errors ...', () => {
+describe('Test #42 - Create walker with errors ...', () => {
 	let newPet1;
 	let newPet2;
 	let newService;
@@ -164,13 +201,19 @@ describe('Test #30.1 - Create walker with errors ...', () => {
 					expect(res.status).toBe(400);
 					expect(res.body.result).toBe(errorMessage);
 				});
-		} catch (error) /* istanbul ignore next */  {}
+		} catch (error) /* istanbul ignore next */ {}
 	};
 
-	test('Test #30.1.1 - Create new walker without pets', () => {
+	test('Test #42.1.1 - Create new walker without pets', () => {
 		testTemplate({ services: [newService.id] }, 'Missing Parameter pets');
 	});
-	test('Test #30.1.2 -  Create new walker without service', () => {
+	test('Test #42.1.2 -  Create new walker without service', () => {
 		testTemplate({ pets: [newPet1.id, newPet2.id] }, 'Missing Parameter services');
+	});
+	test('Test #42.1.3 -  Create new walker without service does not exist', async () => {
+		testTemplate({ pets: [newPet1.id, newPet2.id], services: [9999999] }, 'Service does not exist');
+	});
+	test('Test #42.1.4 -  Create new walker without pet does not exist', () => {
+		testTemplate({ pets: [9999999], services: [newService.id] }, 'Pet does not exist');
 	});
 });

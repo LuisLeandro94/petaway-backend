@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import Service from './service';
 import Walker from '~models/walker';
 import { ErrorHandler } from '~utils/middleware';
@@ -8,13 +9,16 @@ import WalkerPet from '~models/walker-pet';
 import WalkerResourceService from './walker-resource-service';
 import ResourceService from './resource-service';
 import PetService from './pet-service';
-import { Op } from 'sequelize';
 
 export default class WalkerService extends Service {
 	UserService: UserService;
+
 	WalkerPetService: WalkerPetService;
+
 	WalkerResourceService: WalkerResourceService;
+
 	ResourceService: ResourceService;
+
 	PetService: PetService;
 
 	constructor() {
@@ -29,26 +33,26 @@ export default class WalkerService extends Service {
 	addOrUpdateWalker = async (userId: number, services: any[], pets: any[]) => {
 		try {
 			if (!(await this.ResourceService.any({ id: { [Op.in]: services } }))) {
-				throw new ErrorHandler('service does not exist', 400);
+				throw new ErrorHandler('Service does not exist', 400);
 			}
 
 			if (!(await this.PetService.any({ id: { [Op.in]: pets } }))) {
-				throw new ErrorHandler('pet does not exist', 400);
+				throw new ErrorHandler('Pet does not exist', 400);
 			}
 
 			if (!(await this.UserService.any({ id: userId }))) {
-				throw new ErrorHandler('user does not exist', 400);
+				throw new ErrorHandler('User does not exist', 400);
 			}
 			let newWalker;
 
-			if (!(await this.any({ userId: userId }))) {
+			if (!(await this.any({ userId }))) {
 				newWalker = new Walker({
-					userId: userId,
+					userId,
 					isDeleted: false
 				});
 				await this.save(newWalker);
 			} else {
-				newWalker = await this.getSingle(null, [{ userId: userId }], null, null);
+				newWalker = await this.getSingle(null, [{ userId }], null, null);
 			}
 
 			await WalkerResource.destroy({
@@ -89,8 +93,8 @@ export default class WalkerService extends Service {
 			);
 
 			return newWalker;
-		} catch (error) /* istanbul ignore next */  {
-			throw new ErrorHandler(error);
+		} catch (error) /* istanbul ignore next */ {
+			throw new ErrorHandler(error.message, error.code);
 		}
 	};
 }

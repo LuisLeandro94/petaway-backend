@@ -1,11 +1,13 @@
-export {};
 import { sequelize } from '~models';
 import { ResourceService, UserService } from '~v1/services';
 import Relations from '~models/relations';
 import User from '~models/user';
 import Resource from '~models/resource';
 
+export {};
+
 const request = require('supertest');
+
 const MAIN_ROUTE = '/v1/services';
 const LOGIN_ROUTE = '/v1/auth';
 
@@ -32,17 +34,15 @@ beforeAll(async () => {
 		.catch((err) => console.log(`Error: ${err}`));
 });
 
-test('Test #13 - Doing login', () => {
-	return request(app)
+test('Test #19 - Doing login', () => request(app)
 		.post(LOGIN_ROUTE)
 		.send({ email: user.email, password: user.password })
 		.then((res) => {
 			jwt = res.body.result;
 			expect(res.status).toBe(201);
-		});
-});
+		}));
 
-test('Test #15 - Get single service by id with login', async () => {
+test('Test #20 - Get single service by id with login', async () => {
 	const service = new Resource({ type: 'Pet walking' });
 	await resourceService.save(service);
 	return request(app)
@@ -54,7 +54,7 @@ test('Test #15 - Get single service by id with login', async () => {
 		});
 });
 
-test("Test #17 - Get single service by id but service dosen't exist", async () => {
+test("Test #21 - Get single service by id but service dosen't exist", async () => {
 	await Resource.destroy({
 		where: {
 			id: 2000
@@ -69,16 +69,14 @@ test("Test #17 - Get single service by id but service dosen't exist", async () =
 		});
 });
 
-test('Test #19 - Get single service by id without login', () => {
-	return request(app)
+test('Test #22 - Get single service by id without login', () => request(app)
 		.get(`${MAIN_ROUTE}/${1}`)
 		.then((res) => {
 			expect(res.status).toBe(401);
 			expect(res.body.result).toBe('Failed to authenticate token.');
-		});
-});
+		}));
 
-test('Test #14 - Get all services with login', async () => {
+test('Test #23 - Get all services with login', async () => {
 	const service = new Resource({ type: 'Pet sitter' });
 	await resourceService.save(service);
 
@@ -92,7 +90,7 @@ test('Test #14 - Get all services with login', async () => {
 		});
 });
 
-test('Test #18 - Get all services without login', async () => {
+test('Test #24 - Get all services without login', async () => {
 	const service = new Resource({ type: 'Pet sitter' });
 	await resourceService.save(service);
 
