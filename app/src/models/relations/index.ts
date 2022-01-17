@@ -8,10 +8,10 @@ import UserData from '~models/user-data';
 
 class Relations {
 	defineRelations = () => {
-		Event.hasOne(EventStatus, {
-			foreignKey: 'eventId',
-			as: 'Status'
-		});
+		// Event.hasOne(EventStatus, {
+		// 	foreignKey: 'eventId',
+		// 	as: 'Status'
+		// });
 		Event.hasOne(User, {
 			foreignKey: 'id',
 			as: 'user'

@@ -4,7 +4,6 @@ import Pet from '~models/pet';
 import Resource from '~models/resource';
 import User from '~models/user';
 import UserData from '~models/user-data';
-import Walker from '~models/walker';
 import { ErrorHandler, ResponseHandler } from '~utils/middleware';
 import { WalkerService } from '~v1/services';
 
@@ -20,11 +19,11 @@ export default class WalkerController {
 			const { services, pets } = req.body;
 			const userId = req.user_id;
 			if (await this.WalkerService.any({ userId: userId })) {
-				throw new ErrorHandler('user already is a walker', 500);
+				throw new ErrorHandler('user already is a walker', 400);
 			}
 			const response = await this.WalkerService.addOrUpdateWalker(userId, services, pets);
 			res.status(201).json(new ResponseHandler(true, 201, response));
-		} catch (error) {
+		} catch (error) /* istanbul ignore next */ {
 			res.status(error.code).json(new ResponseHandler(false, error.code, error.message));
 		}
 	};
@@ -33,11 +32,11 @@ export default class WalkerController {
 			const { services, pets } = req.body;
 			const userId = req.user_id;
 			if (!(await this.WalkerService.any({ userId: userId }))) {
-				throw new ErrorHandler('user is not a walker', 500);
+				throw new ErrorHandler('user is not a walker', 400);
 			}
 			const response = await this.WalkerService.addOrUpdateWalker(userId, services, pets);
-			res.status(201).json(new ResponseHandler(true, 201, response));
-		} catch (error) {
+			res.status(200).json(new ResponseHandler(true, 200, response));
+		} catch (error) /* istanbul ignore next */ {
 			res.status(error.code).json(new ResponseHandler(false, error.code, error.message));
 		}
 	};
@@ -46,11 +45,11 @@ export default class WalkerController {
 		try {
 			const userId = req.user_id;
 			if (!(await this.WalkerService.any({ userId: userId }))) {
-				throw new ErrorHandler('user is not a walker', 500);
+				throw new ErrorHandler('user is not a walker', 400);
 			}
 			const walker = await this.WalkerService.delete([{ userId: userId }]);
-			res.status(201).json(new ResponseHandler(true, 201, walker));
-		} catch (error) {
+			res.status(204).json(new ResponseHandler(true, 204, walker));
+		} catch (error) /* istanbul ignore next */ {
 			res.status(error.code).json(new ResponseHandler(false, error.code, error.message));
 		}
 	};
@@ -84,8 +83,8 @@ export default class WalkerController {
 					}
 				}
 			]);
-			res.status(201).json(new ResponseHandler(true, 201, response));
-		} catch (error) {
+			res.status(200).json(new ResponseHandler(true, 200, response));
+		} catch (error) /* istanbul ignore next */ {
 			res.status(error.code).json(new ResponseHandler(false, error.code, error.message));
 		}
 	};
@@ -94,8 +93,8 @@ export default class WalkerController {
 		try {
 			const { id } = req.query;
 			const response = await this.WalkerService.getSingle(null, [{ id: id }], null, null);
-			res.status(201).json(new ResponseHandler(true, 201, response));
-		} catch (error) {
+			res.status(200).json(new ResponseHandler(true, 200, response));
+		} catch (error) /* istanbul ignore next */ {
 			res.status(error.code).json(new ResponseHandler(false, error.code, error.message));
 		}
 	};

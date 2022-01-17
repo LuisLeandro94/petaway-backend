@@ -8,7 +8,7 @@ interface IEventAttributes {
 	walkerId: number;
 	resourceId: number;
 	petId: string;
-	status: number;
+	status?: number;
 	date: Date;
 }
 
@@ -23,7 +23,7 @@ export default class Event extends Model<IEventAttributes> implements IEventAttr
 
 	petId: string;
 
-	status: number;
+	status?: number;
 
 	date: Date;
 }

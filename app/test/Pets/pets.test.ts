@@ -77,6 +77,24 @@ test('Test #10 - Get single Pet by id with login', async () => {
 		});
 });
 
+test('Test #10.1 - Get single Pet but does not exit', async () => {
+	const pet = new Pet({ type: 'Cat' });
+	const addedPet = await petService.save(pet);
+	const petIdToTest = addedPet.id;
+	await Pet.destroy({
+		where: {
+			id: addedPet.id
+		}
+	});
+	return request(app)
+		.get(`${MAIN_ROUTE}/${petIdToTest}`)
+		.set('authorization', `Bearer ${jwt}`)
+		.then((res) => {
+			expect(res.status).toBe(400);
+			expect(res.body.result).toBe(`Pet dosen't exist`);
+		});
+});
+
 test('Test #12 - Get single Pet by id without login', () => {
 	return request(app)
 		.get(`${MAIN_ROUTE}/${1}`)

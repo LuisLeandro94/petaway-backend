@@ -2,7 +2,7 @@ import 'module-alias/register';
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import { AuthRoute, UserRoute, ResourceRoute, PetRoute, WalkerRoute } from '~v1/routes';
+import { AuthRoute, UserRoute, ResourceRoute, PetRoute, WalkerRoute, EventRoute } from '~v1/routes';
 import JWT from '~utils/middleware/passport';
 
 const app = express();
@@ -30,6 +30,7 @@ app.use('/v1', new JWT().verifyJWT, UserRoute);
 app.use('/v1', new JWT().verifyJWT, ResourceRoute);
 app.use('/v1', new JWT().verifyJWT, PetRoute);
 app.use('/v1', new JWT().verifyJWT, WalkerRoute);
+app.use('/v1', new JWT().verifyJWT, EventRoute);
 
 app.use((err, req, res, next) => {
 	const { name, message, stack } = err;

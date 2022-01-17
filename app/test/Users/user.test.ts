@@ -56,7 +56,7 @@ test('Test #22 - Get single user by id', async () => {
 				expect(res.body.result.userData.lastName).toBe('Panado');
 				expect(res.body.result.id).toBe(user_.id);
 			});
-	} catch (error) {}
+	} catch (error) /* istanbul ignore next */  {}
 });
 
 test("Test #22.2 - Get single user by id  but service dosen't exist", async () => {
@@ -78,7 +78,7 @@ test("Test #22.2 - Get single user by id  but service dosen't exist", async () =
 				expect(res.status).toBe(500);
 				expect(res.body.result).toBe('User does not exist');
 			});
-	} catch (error) {}
+	} catch (error) /* istanbul ignore next */  {}
 });
 
 test('Test #23 - Update user', async () => {

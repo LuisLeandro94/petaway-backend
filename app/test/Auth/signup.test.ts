@@ -28,8 +28,8 @@ test('Test #5 - Doing signup', () => {
 });
 
 describe('Test #6 - Doing signup with erros ...', () => {
-	const testTemplate = (data, errorMessage) => {
-		return request(app)
+	const testTemplate = async (data, errorMessage) => {
+		return await request(app)
 			.post(MAIN_ROUTE)
 			.send(data)
 			.then((res) => {
@@ -63,7 +63,7 @@ describe('Test #6 - Doing signup with erros ...', () => {
 		delete user_.email;
 		testTemplate(user_, 'Missing Parameter email');
 	});
-	test('Test #6.6 - Email duplicated', () => {
+	test('Test #6.6 - Email duplicated', async () => {
     const user_ = { ...user };
 		testTemplate(user_, 'Error: Email already in use');
 	});

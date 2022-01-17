@@ -31,7 +31,7 @@ export default class ParamsHandler {
 				let isValid = false;
 				try {
 					isValid = this.runValidators(reqParam, param);
-				} catch (error) {
+				} catch (error) /* istanbul ignore next */  {
 					isValid = false;
 				}
 				if (!isValid) {
