@@ -24,6 +24,8 @@ services:
     links:
       - redis-petaway-api        
     tty: true
+    stdin_open: true
+
   database-petaway-api-dev:
     image: postgres:12.3
     ports:
@@ -34,7 +36,7 @@ services:
   database-petaway-api-prod:
     image: postgres:12.3
     ports:
-      -  5464:5464
+      -  5474:5474
     environment:
       POSTGRES_DB: petaway_prod
       POSTGRES_HOST_AUTH_METHOD: trust

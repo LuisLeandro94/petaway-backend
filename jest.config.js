@@ -11,8 +11,8 @@ module.exports = {
 	moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
 	collectCoverage: true,
 	// An array of regexp pattern strings used to skip coverage collection
-	coveragePathIgnorePatterns: ['<rootDir>/node_modules/(?!@foo)','<rootDir>/dist','<rootDir>/app/src/v1/services/service.ts'],
-
+	coveragePathIgnorePatterns: ['<rootDir>/node_modules/(?!@foo)','<rootDir>/dist','<rootDir>/app/src/v1/services/walker-service.ts','<rootDir>/app/src/v1/services/service.ts'],
+	
 	globals: {
 		'ts-jest': {
 			tsConfigFile: 'tsconfig.json',

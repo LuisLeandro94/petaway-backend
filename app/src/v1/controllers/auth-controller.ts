@@ -15,7 +15,7 @@ export default class AuthController {
 			const response = await this.UserService.login(email, password);
 			res.status(201).json(new ResponseHandler(true, 201, response));
 		} catch (error) /* istanbul ignore next */  {
-			res.status(500).json(new ResponseHandler(false, 500, error.message));
+			res.status(error.code).json(new ResponseHandler(false, error.code, error.message));
 		}
 	};
 

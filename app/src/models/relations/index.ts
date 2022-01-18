@@ -34,6 +34,7 @@ class Relations {
 			as: 'walkers',
 			foreignKey: 'serviceId'
 		});
+		
 		UserData.belongsTo(User, {
 			foreignKey: 'userId',
 			as: 'user'
