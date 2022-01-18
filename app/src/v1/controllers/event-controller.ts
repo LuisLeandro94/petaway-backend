@@ -100,10 +100,23 @@ export default class EventController {
 	getByWalker = async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { walkerId } = req.query;
-
-			const response = await this.EventService.get(null, null, null, null, null, { walkerId });
-
-			res.status(200).json(new ResponseHandler(true, 200, response));
+			let events_: any = [];
+			const events = await this.EventService.get(null, null, null, null, null, { walkerId });
+			await Promise.all(
+				events.map(async (event: Event) => {
+					let event_: any = {};
+					event_['id'] = event.id;
+					event_['userId'] = event.userId;
+					event_['walkerId'] = event.walkerId;
+					event_['service'] = await this.ResourceService.getSingle(null, { id: event.resourceId });
+					event_['pet'] = await this.PetService.getSingle(null, { id: event.petId });
+					event_['user'] = await this.UserService.getSingle([User.associations.userData], { id: event.userId });
+					const walker: Walker = await this.WalkerService.getSingle(null, { id: event.walkerId });
+					event_['walker'] = await this.UserService.getSingle([User.associations.userData], { id: walker.userId });
+					events_.push(event_);
+				})
+			);
+			res.status(200).json(new ResponseHandler(true, 200, events_));
 		} catch (error) /* istanbul ignore next */ {
 			res.status(error.code).json(new ResponseHandler(false, error.code, error.message));
 		}
