@@ -16,6 +16,10 @@ COPY . ./code
 COPY package.json ./code
 COPY yarn.lock ./code
 
+WORKDIR /usr/src/app/petaway-api
+RUN yarn
+
 # Exports
 EXPOSE 5000
-# CMD [ "yarn", "start" ]
+
+# ENTRYPOINT ["yarn","build"]
