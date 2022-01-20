@@ -108,6 +108,8 @@ export default class EventController {
 					event_['id'] = event.id;
 					event_['userId'] = event.userId;
 					event_['walkerId'] = event.walkerId;
+					event_['date'] = event.date;
+					event_['status'] = event.status;
 					event_['service'] = await this.ResourceService.getSingle(null, { id: event.resourceId });
 					event_['pet'] = await this.PetService.getSingle(null, { id: event.petId });
 					event_['user'] = await this.UserService.getSingle([User.associations.userData], { id: event.userId });
