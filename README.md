@@ -3,8 +3,6 @@
 
 To run locally:
 
-
 * Run `npm install` or `yarn install`
-* Run ` bash ./runDocker.sh` or ` bash ./runDocker.sh`
-* Run `cd code`
+* Run `bash run_docker.sh`
 * Run or `npm start`
